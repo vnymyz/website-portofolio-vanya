@@ -1,65 +1,147 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Mail, PawPrint } from "lucide-react";
+import SplashScreen from "@/components/SplashScreen";
+import BubbleNav from "@/components/BubbleNav";
+import { GithubIcon, LinkedinIcon } from "@/components/icons";
+import { profile } from "@/data/profile";
+import About from "@/components/sections/About";
+import Experience from "@/components/sections/Experience";
+import TechStack from "@/components/sections/TechStack";
+import Skills from "@/components/sections/Skills";
+import Projects from "@/components/sections/Projects";
+import ContactBanner from "@/components/sections/ContactBanner";
+
+const SECTIONS = ["about", "experience", "techstack", "skills", "projects", "contact"];
+const SPLASH_DURATION = 3200;
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState<boolean | null>(null);
+  const [activeSection, setActiveSection] = useState("about");
+
+  useEffect(() => {
+    if (sessionStorage.getItem("hasVisited")) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- sessionStorage only readable client-side
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      sessionStorage.setItem("hasVisited", "true");
+    }, SPLASH_DURATION);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (isLoading !== false) return;
+
+    // Scrollspy: the active section is the last one whose top has
+    // crossed a line 30% down the viewport. Works for sections of
+    // any height, including short ones at the bottom of the page.
+    const handleScroll = () => {
+      const threshold = window.innerHeight * 0.3;
+      let current = SECTIONS[0];
+
+      for (const id of SECTIONS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= threshold) {
+          current = id;
+        }
+      }
+
+      // At the very bottom of the page the last section + footer may
+      // together be shorter than the viewport, so its top never crosses
+      // the threshold — force it active once the page is fully scrolled.
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 1;
+      if (atBottom) {
+        current = SECTIONS[SECTIONS.length - 1];
+      }
+
+      setActiveSection(current);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isLoading]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+    <>
+      <SplashScreen isVisible={isLoading === true} duration={SPLASH_DURATION} />
+
+      {isLoading === false && (
+        <>
+          <BubbleNav activeSection={activeSection} />
+
+          {/* Top-left social icons */}
+          <div className="fixed left-5 top-5 z-40 flex items-center gap-3">
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href={profile.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md hover:border-sage-500 hover:text-sage-800 transition-colors"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
+              <LinkedinIcon size={15} />
+            </a>
             <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href={profile.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md hover:border-sage-500 hover:text-sage-800 transition-colors"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+              <GithubIcon size={15} />
+            </a>
+            <a
+              href={`mailto:${profile.email}`}
+              aria-label="Email"
+              className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md hover:border-sage-500 hover:text-sage-800 transition-colors"
+            >
+              <Mail size={15} />
+            </a>
+          </div>
+
+          <main>
+            <About />
+            <Experience />
+            <TechStack />
+            <Skills />
+            <Projects />
+            <ContactBanner />
+          </main>
+
+          <footer className="relative bg-sage-900 text-sage-400 py-6 text-center text-sm">
+            <p>
+              © 2026{" "}
+              <span className="text-sage-200 font-semibold">Vanya</span>
+              . All rights reserved.
+            </p>
+
+            {/* Fun Facts easter egg link */}
+            <motion.div
+              className="absolute right-6 top-1/2 -translate-y-1/2"
+              whileHover={{ scale: 1.15, rotate: -8 }}
+              whileTap={{ scale: 0.92 }}
+            >
+              <Link
+                href="/fun-facts"
+                aria-label="Secret: Fun Facts about me"
+                title="Psst... wanna know a secret?"
+                className="block text-sage-500 hover:text-sage-200 transition-colors"
+              >
+                <PawPrint size={20} />
+              </Link>
+            </motion.div>
+          </footer>
+        </>
+      )}
+    </>
   );
 }

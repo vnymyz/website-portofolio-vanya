@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vanya Mayazura Puspitaningrum — Portfolio Website
+
+Personal portfolio SPA built with Next.js 15 (App Router), TypeScript, Tailwind CSS v4, and Framer Motion.
+
+## Tech Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4 (custom sage green palette)
+- **Animations:** Framer Motion
+- **Icons:** Lucide React
+- **Fonts:** Plus Jakarta Sans (body, via `next/font`), Press Start 2P (splash screen)
+- **Hosting:** Vercel (recommended)
+
+## Color Palette
+
+| Token      | Hex       | Usage                      |
+| ---------- | --------- | -------------------------- |
+| `sage-100` | `#F1F3E0` | Page background            |
+| `sage-300` | `#D2DCB6` | Borders, dividers          |
+| `sage-500` | `#A1BC98` | Secondary accent           |
+| `sage-700` | `#778873` | Primary accent, buttons    |
+| `sage-900` | `#3d4a3a` | Dark backgrounds, headings |
+
+## Prerequisites
+
+- Node.js 20+ and npm
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+git clone <repo-url>
+cd portfolio-vanya
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view it.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other scripts:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build   # production build
+npm run start   # serve production build
+npm run lint    # run eslint
+```
+
+## Structure
+
+- `data/profile.ts` — single source of truth for all content (bio, experience, tech stack, skills, projects, fun facts, social links)
+- `app/page.tsx` — main SPA page: splash screen, scrollspy, section order, social icons, footer with Fun Facts easter-egg link
+- `app/fun-facts/page.tsx` — hidden Fun Facts page (game library, cats, moments, favorite food, hobbies)
+- `app/layout.tsx` — fonts (Plus Jakarta Sans for body, Press Start 2P for splash) + metadata
+- `app/globals.css` — sage green color tokens + custom animations
+- `next.config.ts` — `images.remotePatterns` allowlist for external image hosts (Unsplash, pravatar, placehold.co)
+- `components/SplashScreen.tsx` — pixel-heart loading screen ("Welcome to Vanya's Portfolio")
+- `components/BubbleNav.tsx` — fixed right-side bubble nav with active-section highlight
+- `components/icons.tsx` — custom SVG icons (GitHub, LinkedIn, Steam, Instagram)
+- `components/sections/`
+  - `About.tsx` — intro, bio, avatar with 3D hover tilt (section 1)
+  - `Experience.tsx` — work history timeline (section 2)
+  - `TechStack.tsx` — tech/tools badges (section 3)
+  - `Skills.tsx` — soft + hard skills (section 4)
+  - `Projects.tsx` — project cards (section 5)
+  - `ContactBanner.tsx` — "Let's work together" CTA with social links (section 6)
+
+## Adding Projects
+
+Edit `data/profile.ts` and add to the `projects` array:
+
+```ts
+projects: [
+  {
+    title: "My Project",
+    description: "What it does and why it matters.",
+    tech: ["React", "Node.js", "PostgreSQL"],
+    link: "https://your-live-demo.com",
+    github: "https://github.com/vnymyz/repo-name",
+  },
+];
+```
+
+## Adding Your Photo
+
+Replace the Unsplash placeholder image in `components/sections/About.tsx`:
+
+```tsx
+<Image
+  src="/images/photo.jpg" // place your photo in public/images/
+  alt={profile.name}
+  width={384}
+  height={384}
+  className="w-full h-full object-cover"
+  priority
+/>
+```
+
+## Easter egg
+
+Click the paw print icon in the footer to navigate to `/fun-facts`.
+
+## Status / TODO
+
+- [ ] Add actual projects to `data/profile.ts` → `projects` array
+- [ ] Replace Unsplash placeholder avatar with a real photo
+- [ ] Replace Unsplash placeholder cat photos with real photos
+- [ ] Deploy to Vercel
+- [ ] (Optional) Dark mode toggle
+- [ ] (Optional) Contact form
+- [ ] (Idea) Steam library integration on Fun Facts page — Steam Web API (`GetPlayerSummaries`/`GetOwnedGames`) via a Next.js API route proxy (no CORS support, needs server-side key + SteamID64)
+- [ ] (Idea) Instagram feed integration on Fun Facts page
+
+## Deployment
+
+```bash
+npx vercel
+```
+
+Or push to GitHub and connect to [vercel.com](https://vercel.com) for automatic deployments.
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Learn Next.js](https://nextjs.org/learn)
