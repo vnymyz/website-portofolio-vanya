@@ -199,11 +199,22 @@ export const profile = {
       "Tekken 7 & 8", "Detroit: Become Human", "Cyberpunk 2077",
       "Persona 3 Reload", "Expedition 33", "All Monster Hunter games", "Dark Souls",
     ],
-    hobbies: ["Gaming", "Swimming"],
-    favoriteFoods: [
-      "Matcha latte", "Bakpau", "Fried Chicken", "Kangkung Toge",
-      "Capcay", "Sop Ayam", "Tempe", "Tahu", "Telur", "Air putih",
+    hobbies: [
+      { name: "Gaming", gif: "/gifs/sweaty-speedrunner.gif" },
+      { name: "Swimming", gif: "/gifs/underwater-hello-im-under-water.gif" },
+      { name: "Coding", gif: "/gifs/spike-monkey-typing.gif" },
+      { name: "Drawing", gif: "/gifs/bob-ross.gif" },
+      { name: "Singing", gif: "/gifs/aaaa-hola.gif" },
+      { name: "Reading", gif: "/gifs/what-am-i-reading-squinting.gif" },
     ],
+    favoriteFoods: {
+      topPick: "My Mom's Cooking",
+      mains: ["Fried Chicken", "Nasi Goreng", "Steak Tenderloin", "Sushi", "Tahu", "Telur Ceplok", "Tempe"],
+      vegetables: ["Broccoli", "Capcay", "Kangkung", "Sayur Asem", "Sop Ayam", "Toge"],
+      snacks: ["Bakpau", "Cheese Dumpling", "Tempe Mendoan"],
+      desserts: ["Blueberry Cheesecake", "Choco Lava Cake", "Chocolate Vanilla Ice Cream"],
+      drinks: ["Air Putih", "Butterscotch Sea Salt Latte", "Irish Latte", "Matcha Latte"],
+    },
     cats: [
       {
         name: "Dadang",

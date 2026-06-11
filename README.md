@@ -52,7 +52,10 @@ npm run lint    # run eslint
 - `app/fun-facts/page.tsx` — hidden Fun Facts page (game library, cats, moments, favorite food, hobbies)
 - `app/layout.tsx` — fonts (Plus Jakarta Sans for body, Press Start 2P for splash) + metadata
 - `app/globals.css` — sage green color tokens + custom animations
+- `app/icon.tsx` — generated favicon (green glowing "V")
 - `next.config.ts` — `images.remotePatterns` allowlist for external image hosts (Unsplash, pravatar, placehold.co)
+- `public/images/` — your photos (avatar, cats, etc.)
+- `public/gifs/` — hobby GIFs shown on the Fun Facts page
 - `components/SplashScreen.tsx` — pixel-heart loading screen ("Welcome to Vanya's Portfolio")
 - `components/BubbleNav.tsx` — fixed right-side bubble nav with active-section highlight
 - `components/icons.tsx` — custom SVG icons (GitHub, LinkedIn, Steam, Instagram)
@@ -95,6 +98,36 @@ Replace the Unsplash placeholder image in `components/sections/About.tsx`:
 />
 ```
 
+## Adding Hobby GIFs
+
+The Fun Facts page renders a card per hobby with a GIF and "# Name" caption. Edit `data/profile.ts` → `funFacts.hobbies`:
+
+```ts
+hobbies: [
+  { name: "Gaming", gif: "/gifs/sweaty-speedrunner.gif" },
+  { name: "Swimming", gif: "/gifs/underwater-hello-im-under-water.gif" },
+];
+```
+
+Drop the GIF files in `public/gifs/`.
+
+## Editing the Favorite Food Menu
+
+`data/profile.ts` → `funFacts.favoriteFoods` is a restaurant-menu-style breakdown:
+
+```ts
+favoriteFoods: {
+  topPick: "My Mom's Cooking", // highlighted "#1 Pick" banner
+  mains: [...],
+  vegetables: [...],
+  snacks: [...],
+  desserts: [...],
+  drinks: [...],
+};
+```
+
+Each category becomes a column in `app/fun-facts/page.tsx`.
+
 ## Easter egg
 
 Click the paw print icon in the footer to navigate to `/fun-facts`.
@@ -104,7 +137,7 @@ Click the paw print icon in the footer to navigate to `/fun-facts`.
 - [ ] Add actual projects to `data/profile.ts` → `projects` array
 - [ ] Replace Unsplash placeholder avatar with a real photo
 - [ ] Replace Unsplash placeholder cat photos with real photos
-- [ ] Deploy to Vercel
+- [x] Deploy to Vercel — [vanya-mp.vercel.app](https://vanya-mp.vercel.app)
 - [ ] (Optional) Dark mode toggle
 - [ ] (Optional) Contact form
 - [ ] (Idea) Steam library integration on Fun Facts page — Steam Web API (`GetPlayerSummaries`/`GetOwnedGames`) via a Next.js API route proxy (no CORS support, needs server-side key + SteamID64)

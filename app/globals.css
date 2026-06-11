@@ -61,6 +61,12 @@ body {
   to { transform: rotate(360deg); }
 }
 
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 0px 0px rgba(119, 136, 115, 0.5); }
+  50% { box-shadow: 0 0 24px 6px rgba(119, 136, 115, 0.5); }
+}
+
 .animate-float { animation: float 4s ease-in-out infinite; }
 .animate-float-delayed { animation: float-delayed 4.5s ease-in-out infinite; }
 .animate-spin-slow { animation: spin-slow 30s linear infinite; }
+.animate-glow-pulse { animation: glow-pulse 2.5s ease-in-out infinite; }

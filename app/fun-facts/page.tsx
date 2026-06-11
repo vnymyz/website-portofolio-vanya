@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowLeft, Gamepad2, Soup, Sparkles, PawPrint, Camera, Heart } from "lucide-react";
+import { ArrowLeft, Gamepad2, Soup, Sparkles, PawPrint, Camera, Heart, UtensilsCrossed, Coffee, Sprout, Cookie, IceCreamCone, Crown } from "lucide-react";
 import { SteamIcon, InstagramIcon } from "@/components/icons";
 import { profile } from "@/data/profile";
 
@@ -136,15 +136,51 @@ export default function FunFactsPage() {
             </div>
             <h2 className="text-2xl font-extrabold text-sage-900">Favorite Food &amp; Drinks</h2>
           </div>
-          <div className="flex flex-wrap gap-2.5">
-            {profile.funFacts.favoriteFoods.map((f) => (
-              <span
-                key={f}
-                className="text-sm bg-white/80 backdrop-blur text-sage-800 px-4 py-2 rounded-full font-medium border border-sage-200 shadow-sm"
-              >
-                {f}
-              </span>
-            ))}
+
+          {/* Menu card */}
+          <div className="bg-white/85 backdrop-blur rounded-3xl shadow-xl border border-sage-200 px-6 py-10 sm:px-12 sm:py-12">
+            <div className="text-center mb-10">
+              <p className="text-sage-500 text-xs tracking-[0.4em] uppercase font-semibold">
+                ✦ Vanya&apos;s Picks ✦
+              </p>
+            </div>
+
+            {/* Chef's special / #1 pick */}
+            <div className="animate-glow-pulse flex items-center justify-center gap-3 mb-10 mx-auto w-fit px-6 py-4 rounded-2xl bg-sage-700 text-white shadow-md">
+              <Crown size={20} className="text-sage-200 shrink-0" />
+              <p className="font-serif text-lg sm:text-xl italic text-center">
+                #1 Pick: {profile.funFacts.favoriteFoods.topPick}
+              </p>
+              <Crown size={20} className="text-sage-200 shrink-0" />
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-x-12 gap-y-10">
+              {[
+                { label: "Mains & Sides", icon: UtensilsCrossed, items: profile.funFacts.favoriteFoods.mains },
+                { label: "Vegetables", icon: Sprout, items: profile.funFacts.favoriteFoods.vegetables },
+                { label: "Snacks", icon: Cookie, items: profile.funFacts.favoriteFoods.snacks },
+                { label: "Desserts", icon: IceCreamCone, items: profile.funFacts.favoriteFoods.desserts },
+                { label: "Drinks", icon: Coffee, items: profile.funFacts.favoriteFoods.drinks },
+              ].map(({ label, icon: Icon, items }) => (
+                <div key={label}>
+                  <div className="flex items-center gap-2 mb-5">
+                    <Icon size={16} className="text-sage-700" />
+                    <h4 className="font-serif text-lg font-bold text-sage-900 tracking-wide">
+                      {label}
+                    </h4>
+                  </div>
+                  <ul className="space-y-3">
+                    {items.map((f) => (
+                      <li key={f} className="flex items-end gap-2 text-sage-800">
+                        <span className="font-serif">{f}</span>
+                        <span className="flex-1 border-b border-dotted border-sage-300 mb-1.5" />
+                        <Heart size={12} className="text-sage-400 fill-sage-400 mb-1" />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
         </motion.section>
 
@@ -161,14 +197,20 @@ export default function FunFactsPage() {
             </div>
             <h2 className="text-2xl font-extrabold text-sage-900">Hobbies</h2>
           </div>
-          <div className="flex flex-wrap gap-2.5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {profile.funFacts.hobbies.map((h) => (
-              <span
-                key={h}
-                className="text-sm bg-sage-700 text-white px-4 py-2 rounded-full font-medium"
+              <div
+                key={h.name}
+                className="group relative w-full aspect-video rounded-3xl overflow-hidden bg-sage-200 border border-sage-200 shadow-sm"
               >
-                {h}
-              </span>
+                <Image src={h.gif} alt={h.name} fill unoptimized className="object-cover" />
+                <div className="absolute inset-0 transition-shadow duration-300 group-hover:shadow-[inset_0_0_40px_20px_rgba(0,0,0,0.45)]" />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/35 to-transparent pt-8 pb-3">
+                  <p className="font-serif text-lg font-bold text-white text-center">
+                    # {h.name}
+                  </p>
+                </div>
+              </div>
             ))}
           </div>
         </motion.section>
