@@ -142,11 +142,13 @@ export const profile = {
   ],
 
   softSkills: [
-    { name: "Time Management", icon: "⏱️" },
-    { name: "Teamwork", icon: "🤝" },
-    { name: "Adaptability", icon: "🔄" },
-    { name: "Problem Solving", icon: "🧩" },
-    { name: "Analytical Thinking", icon: "🔍" },
+    { name: "Time Management" },
+    { name: "Teamwork" },
+    { name: "Adaptability" },
+    { name: "Problem Solving" },
+    { name: "Analytical Thinking" },
+    { name: "Teaching" },
+    { name: "Mentoring" },
   ],
 
   languages: [

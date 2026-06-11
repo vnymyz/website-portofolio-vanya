@@ -86,7 +86,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md hover:border-sage-500 hover:text-sage-800 transition-colors"
+              className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md transition-all hover:bg-sage-700 hover:border-sage-700 hover:text-white hover:shadow-lg hover:shadow-sage-400/40"
             >
               <LinkedinIcon size={15} />
             </a>
@@ -95,14 +95,14 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
-              className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md hover:border-sage-500 hover:text-sage-800 transition-colors"
+              className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md transition-all hover:bg-sage-700 hover:border-sage-700 hover:text-white hover:shadow-lg hover:shadow-sage-400/40"
             >
               <GithubIcon size={15} />
             </a>
             <a
               href={`mailto:${profile.email}`}
               aria-label="Email"
-              className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md hover:border-sage-500 hover:text-sage-800 transition-colors"
+              className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md transition-all hover:bg-sage-700 hover:border-sage-700 hover:text-white hover:shadow-lg hover:shadow-sage-400/40"
             >
               <Mail size={15} />
             </a>

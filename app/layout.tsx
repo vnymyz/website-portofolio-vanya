@@ -10,7 +10,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Portofolio - Vanya Mayazura",
+  title: "Vanya MP",
   description:
     "Software Engineer Instructor, Full-stack Developer & Data Science Educator based in Bekasi, Indonesia.",
   keywords: [
