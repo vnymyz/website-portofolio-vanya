@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ExternalLink, FolderOpen } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
@@ -40,10 +41,21 @@ export default function Projects() {
                 transition={{ delay: i * 0.1, duration: 0.6 }}
                 whileHover={{ y: -4 }}
               >
-                {/* Image placeholder */}
-                <div className="h-44 bg-gradient-to-br from-sage-200 to-sage-400 flex items-center justify-center">
-                  <FolderOpen size={40} className="text-sage-600" />
-                </div>
+                {/* Thumbnail */}
+                {project.image ? (
+                  <div className="relative h-44 w-full overflow-hidden">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                ) : (
+                  <div className="h-44 bg-gradient-to-br from-sage-200 to-sage-400 flex items-center justify-center">
+                    <FolderOpen size={40} className="text-sage-600" />
+                  </div>
+                )}
 
                 <div className="p-6">
                   <h3 className="font-bold text-sage-900 text-lg mb-2">
