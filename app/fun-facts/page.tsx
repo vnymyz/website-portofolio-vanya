@@ -2,10 +2,33 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Gamepad2, Soup, Sparkles, PawPrint, Camera, Heart, UtensilsCrossed, Coffee, Sprout, Cookie, IceCreamCone, Crown } from "lucide-react";
+import { ArrowLeft, Soup, Sparkles, PawPrint, Camera, Heart, UtensilsCrossed, Coffee, Sprout, Cookie, IceCreamCone, Crown, Clock } from "lucide-react";
 import { SteamIcon, InstagramIcon } from "@/components/icons";
 import { profile } from "@/data/profile";
+
+type SteamGame = {
+  appid: number;
+  name: string;
+  playtimeHours: number;
+  header: string;
+};
+
+type SteamRecentGame = {
+  appid: number;
+  name: string;
+  playtimeHours: number;
+  playtime2WeeksHours: number;
+  header: string;
+};
+
+type SteamData = {
+  player: { name: string; avatar: string; profileUrl: string; online: boolean } | null;
+  gameCount: number;
+  topGames: SteamGame[];
+  recentGames: SteamRecentGame[];
+};
 
 const sectionHeading = {
   hidden: { opacity: 0, y: 24 },
@@ -13,6 +36,19 @@ const sectionHeading = {
 };
 
 export default function FunFactsPage() {
+  const [steam, setSteam] = useState<SteamData | null>(null);
+  const [steamError, setSteamError] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/steam")
+      .then((res) => {
+        if (!res.ok) throw new Error("Steam fetch failed");
+        return res.json();
+      })
+      .then(setSteam)
+      .catch(() => setSteamError(true));
+  }, []);
+
   return (
     <main className="relative overflow-hidden bg-gradient-to-br from-sage-100 via-sage-300 to-sage-600">
       {/* Decorative blobs */}
@@ -52,14 +88,113 @@ export default function FunFactsPage() {
         >
           <div className="flex items-center gap-3 mb-6">
             <div className="w-11 h-11 rounded-2xl bg-sage-700 text-white flex items-center justify-center">
-              <Gamepad2 size={20} />
+              <SteamIcon size={28} />
             </div>
             <h2 className="text-2xl font-extrabold text-sage-900">Game Library</h2>
           </div>
-          <div className="flex flex-col items-center justify-center gap-3 bg-white/80 backdrop-blur rounded-3xl py-14 shadow-xl border border-sage-200">
-            <SteamIcon size={64} />
-            <p className="text-sage-700 text-sm font-medium">Steam library coming soon</p>
-          </div>
+          {steamError && (
+            <div className="flex flex-col items-center justify-center gap-3 bg-white/80 backdrop-blur rounded-3xl py-14 shadow-xl border border-sage-200">
+              <SteamIcon size={64} />
+              <p className="text-sage-700 text-sm font-medium">Steam library unavailable right now</p>
+            </div>
+          )}
+
+          {!steamError && !steam && (
+            <div className="flex flex-col items-center justify-center gap-3 bg-white/80 backdrop-blur rounded-3xl py-14 shadow-xl border border-sage-200">
+              <SteamIcon size={64} className="animate-pulse" />
+              <p className="text-sage-700 text-sm font-medium">Loading Steam library…</p>
+            </div>
+          )}
+
+          {steam && (
+            <div className="bg-white/85 backdrop-blur rounded-3xl shadow-xl border border-sage-200 px-6 py-8 sm:px-10 sm:py-10">
+              {steam.player && (
+                <a
+                  href={steam.player.profileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 mb-8 group"
+                >
+                  <div className="relative w-16 h-16 rounded-2xl overflow-hidden ring-4 ring-sage-200 shrink-0">
+                    <Image src={steam.player.avatar} alt={steam.player.name} fill className="object-cover" />
+                  </div>
+                  <div>
+                    <p className="font-serif text-xl font-bold text-sage-900 group-hover:text-sage-700 transition-colors">
+                      {steam.player.name}
+                    </p>
+                    <p className="text-sage-600 text-sm flex items-center gap-2">
+                      <span className={`inline-block w-2 h-2 rounded-full ${steam.player.online ? "bg-green-500" : "bg-sage-400"}`} />
+                      {steam.player.online ? "Online" : "Offline"} · {steam.gameCount} games owned
+                    </p>
+                  </div>
+                </a>
+              )}
+
+              {steam.recentGames.length > 0 && (
+                <div className="mb-8">
+                  <p className="text-sage-500 text-xs tracking-[0.3em] uppercase font-semibold mb-3">
+                    Recently Played
+                  </p>
+                  <div className="flex flex-col gap-3">
+                    {steam.recentGames.map((game) => (
+                      <div
+                        key={game.appid}
+                        className="group flex items-center gap-4 rounded-2xl overflow-hidden border border-sage-200 bg-sage-50 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-sage-400/40 hover:border-sage-400"
+                      >
+                        <div className="relative w-32 sm:w-44 aspect-[460/215] shrink-0 overflow-hidden">
+                          <Image
+                            src={game.header}
+                            alt={game.name}
+                            fill
+                            unoptimized
+                            className="object-cover transition-transform duration-300 group-hover:scale-110"
+                          />
+                        </div>
+                        <div className="py-2 pr-4">
+                          <p className="text-sage-900 text-base font-semibold group-hover:text-sage-700 transition-colors">
+                            {game.name}
+                          </p>
+                          <p className="text-sage-600 text-xs flex items-center gap-1 mt-1">
+                            <Clock size={12} />
+                            {game.playtime2WeeksHours} hrs in last 2 weeks · {game.playtimeHours.toLocaleString()} hrs total
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <p className="text-sage-500 text-xs tracking-[0.3em] uppercase font-semibold mb-5">
+                Most Played
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {steam.topGames.map((game) => (
+                  <div
+                    key={game.appid}
+                    className="group rounded-2xl overflow-hidden border border-sage-200 bg-sage-50 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-sage-400/40 hover:border-sage-400"
+                  >
+                    <div className="relative w-full aspect-[460/215] overflow-hidden">
+                      <Image
+                        src={game.header}
+                        alt={game.name}
+                        fill
+                        unoptimized
+                        className="object-cover transition-transform duration-300 group-hover:scale-110"
+                      />
+                    </div>
+                    <div className="px-3 py-2">
+                      <p className="text-sage-900 text-sm font-semibold truncate group-hover:text-sage-700 transition-colors">{game.name}</p>
+                      <p className="text-sage-600 text-xs flex items-center gap-1 mt-0.5">
+                        <Clock size={12} />
+                        {game.playtimeHours.toLocaleString()} hrs
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </motion.section>
 
         {/* 2. My 2 Cats */}
