@@ -25,6 +25,7 @@ Personal portfolio SPA built with Next.js 15 (App Router), TypeScript, Tailwind 
 ## Prerequisites
 
 - Node.js 20+ and npm
+- A Steam Web API key + SteamID64 (for the Game Library section — see [Environment Variables](#environment-variables))
 
 ## Getting Started
 
@@ -36,6 +37,20 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view it.
+
+## Environment Variables
+
+The Game Library section on `/fun-facts` pulls live data from Steam via a server-side API route. Create a `.env.local` file in the project root:
+
+```bash
+STEAM_API_KEY=your_steam_web_api_key
+STEAM_ID=your_steamid64
+```
+
+- Get an API key at [steamcommunity.com/dev/apikey](https://steamcommunity.com/dev/apikey) (any domain name works, e.g. your Vercel domain)
+- Find your SteamID64 by pasting your profile URL into [steamid.io](https://steamid.io/)
+
+`.env.local` is gitignored. For production, add both variables in Vercel → Project Settings → Environment Variables.
 
 Other scripts:
 
@@ -49,11 +64,12 @@ npm run lint    # run eslint
 
 - `data/profile.ts` — single source of truth for all content (bio, experience, tech stack, skills, projects, fun facts, social links)
 - `app/page.tsx` — main SPA page: splash screen, scrollspy, section order, social icons, footer with Fun Facts easter-egg link
-- `app/fun-facts/page.tsx` — hidden Fun Facts page (game library, cats, moments, favorite food, hobbies)
+- `app/fun-facts/page.tsx` — hidden Fun Facts page (Steam game library, cats, moments, favorite food, hobbies)
+- `app/api/steam/route.ts` — server-side route that fetches your Steam profile, owned games, and recently played games
 - `app/layout.tsx` — fonts (Plus Jakarta Sans for body, Press Start 2P for splash) + metadata
 - `app/globals.css` — sage green color tokens + custom animations
 - `app/icon.tsx` — generated favicon (green glowing "V")
-- `next.config.ts` — `images.remotePatterns` allowlist for external image hosts (Unsplash, pravatar, placehold.co)
+- `next.config.ts` — `images.remotePatterns` allowlist for external image hosts (Unsplash, pravatar, placehold.co, Steam CDN)
 - `public/images/` — your photos (avatar, cats, etc.)
 - `public/gifs/` — hobby GIFs shown on the Fun Facts page
 - `components/SplashScreen.tsx` — pixel-heart loading screen ("Welcome to Vanya's Portfolio")
@@ -138,9 +154,9 @@ Click the paw print icon in the footer to navigate to `/fun-facts`.
 - [ ] Replace Unsplash placeholder avatar with a real photo
 - [ ] Replace Unsplash placeholder cat photos with real photos
 - [x] Deploy to Vercel — [vanya-mp.vercel.app](https://vanya-mp.vercel.app)
+- [x] Steam library integration on Fun Facts page (profile, top games, recently played)
 - [ ] (Optional) Dark mode toggle
 - [ ] (Optional) Contact form
-- [ ] (Idea) Steam library integration on Fun Facts page — Steam Web API (`GetPlayerSummaries`/`GetOwnedGames`) via a Next.js API route proxy (no CORS support, needs server-side key + SteamID64)
 - [ ] (Idea) Instagram feed integration on Fun Facts page
 
 ## Deployment
