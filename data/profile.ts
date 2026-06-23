@@ -219,12 +219,12 @@ export const profile = {
       {
         name: "Dadang",
         type: "Persian Gray",
-        photo: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&q=80",
+        photo: "/images/dadang.jpeg",
       },
       {
         name: "Lea",
         type: "Maine Coon Brown",
-        photo: "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=400&q=80",
+        photo: "/images/lea.jpeg",
       },
     ],
   },

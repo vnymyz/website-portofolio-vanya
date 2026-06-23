@@ -78,7 +78,7 @@ export default function TechStack() {
             return (
               <motion.div
                 key={cat.category}
-                className="glass-card rounded-2xl p-6 hover:shadow-lg transition-shadow"
+                className="glass-card rounded-2xl p-6 !border-2 !border-sage-400 hover:shadow-lg transition-shadow"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}

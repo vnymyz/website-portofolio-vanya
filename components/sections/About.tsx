@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useMotionTemplate, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import { MapPin, ChevronDown, Brain, Code } from "lucide-react";
 import { profile } from "@/data/profile";
@@ -29,11 +29,25 @@ export default function About() {
     mouseY.set(0);
   };
 
+  const glowX = useTransform(rotateY, [-12, 12], ["20%", "80%"]);
+  const glowY = useTransform(rotateX, [-12, 12], ["80%", "20%"]);
+  const glowBackground = useMotionTemplate`radial-gradient(circle at ${glowX} ${glowY}, rgba(255,255,255,0.55), transparent 25%)`;
+
   return (
     <section
       id="about"
-      className="min-h-screen flex flex-col justify-center relative overflow-hidden py-24 bg-gradient-to-br from-sage-100 via-sage-300 to-sage-600"
+      className="min-h-screen flex flex-col justify-center relative overflow-hidden py-24"
     >
+      {/* Background image */}
+      <Image
+        src="/images/green-herosection.jpg"
+        alt=""
+        fill
+        priority
+        className="object-cover -z-10"
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-sage-100/80 via-sage-300/70 to-sage-600/80 -z-10" />
+
       {/* Background blobs */}
       <div className="absolute top-16 right-16 w-80 h-80 rounded-full bg-sage-300 opacity-25 blur-3xl pointer-events-none" />
       <div className="absolute bottom-24 left-12 w-56 h-56 rounded-full bg-sage-500 opacity-20 blur-3xl pointer-events-none" />
@@ -49,6 +63,9 @@ export default function About() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="relative [perspective:1000px]">
+              {/* Undershadow */}
+              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-56 md:w-72 h-10 md:h-12 rounded-full bg-sage-900/50 blur-2xl pointer-events-none" />
+
               {/* Avatar — dummy photo, replace src with your real photo */}
               <motion.div
                 className="w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden ring-4 ring-white shadow-2xl shadow-sage-900/40"
@@ -65,6 +82,10 @@ export default function About() {
                   height={384}
                   className="w-full h-full object-cover"
                   priority
+                />
+                <motion.div
+                  className="absolute inset-0 pointer-events-none mix-blend-soft-light"
+                  style={{ background: glowBackground }}
                 />
               </motion.div>
 
@@ -103,23 +124,23 @@ export default function About() {
               Vanya Mayazura Puspitaningrum
             </h1>
 
-            <div className="flex items-center gap-2 text-sage-800 font-medium text-sm mb-6">
+            <div className="flex items-center gap-2 text-sage-800 font-medium text-sm mt-4 mb-8">
               <MapPin size={14} />
               <span>{profile.location}</span>
             </div>
 
-            <p className="text-slate-800 text-base leading-relaxed mb-4 max-w-2xl border-l-2 border-sage-700 pl-4">
+            <p className="text-sage-900 text-lg leading-relaxed mb-4 max-w-2xl border-l-2 border-sage-700 pl-4 font-medium">
               {profile.bio}
             </p>
 
-            <p className="text-slate-700 text-sm leading-relaxed mb-8 max-w-2xl pl-4">
+            <p className="text-sage-900 text-base leading-relaxed mb-8 max-w-2xl pl-4 font-medium">
               Currently a{" "}
-              <span className="text-sage-700 font-semibold">
+              <span className="text-sage-700 font-bold">
                 Software Engineer Instructor
               </span>{" "}
               at Haltev IT Learning Center, teaching Fullstack Web
               Development, Data Science, and AI — and always{" "}
-              <span className="text-sage-700 font-semibold">
+              <span className="text-sage-700 font-bold">
                 happy to grow
               </span>{" "}
               along the way.

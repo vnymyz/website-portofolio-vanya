@@ -4,8 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Soup, Sparkles, PawPrint, Camera, Heart, UtensilsCrossed, Coffee, Sprout, Cookie, IceCreamCone, Crown, Clock } from "lucide-react";
-import { SteamIcon, InstagramIcon } from "@/components/icons";
+import { ArrowLeft, Soup, Sparkles, PawPrint, Heart, UtensilsCrossed, Coffee, Sprout, Cookie, IceCreamCone, Crown, Clock } from "lucide-react";
+import { SteamIcon } from "@/components/icons";
 import { profile } from "@/data/profile";
 
 type SteamGame = {
@@ -234,26 +234,6 @@ export default function FunFactsPage() {
                 </>
               );
             })()}
-          </div>
-        </motion.section>
-
-        {/* 3. Some Moments */}
-        <motion.section
-          className="mb-20"
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={sectionHeading}
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-11 h-11 rounded-2xl bg-sage-700 text-white flex items-center justify-center">
-              <Camera size={20} />
-            </div>
-            <h2 className="text-2xl font-extrabold text-sage-900">Some Moments</h2>
-          </div>
-          <div className="flex flex-col items-center justify-center gap-3 bg-white/80 backdrop-blur rounded-3xl py-14 shadow-xl border border-sage-200">
-            <InstagramIcon size={64} />
-            <p className="text-sage-700 text-sm font-medium">Instagram feed coming soon</p>
           </div>
         </motion.section>
 
