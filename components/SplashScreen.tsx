@@ -3,12 +3,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Press_Start_2P } from "next/font/google";
 
-const pixelFont = Press_Start_2P({ subsets: ["latin"], weight: "400" });
+const pixelFont = Press_Start_2P({ subsets: ["latin"], weight: "400", preload: false });
 
 interface Props {
   isVisible: boolean;
   /** Total splash duration in ms — hearts fill sequentially across this. */
   duration?: number;
+  onSkip?: () => void;
 }
 
 // 8x7 pixel-art heart
@@ -66,7 +67,7 @@ function PixelHeart({ index, segment }: { index: number; segment: number }) {
   );
 }
 
-export default function SplashScreen({ isVisible, duration = 3200 }: Props) {
+export default function SplashScreen({ isVisible, duration = 3200, onSkip }: Props) {
   const segment = Math.max((duration / 1000 - HEARTS_VISIBLE_AT) / 3, 0.1);
 
   return (
@@ -77,6 +78,9 @@ export default function SplashScreen({ isVisible, duration = 3200 }: Props) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
+          role="status"
+          aria-live="polite"
+          aria-label="Loading Vanya's portfolio"
         >
           {/* Decorative blobs */}
           <div className="absolute top-1/4 left-1/4 w-72 h-72 rounded-full bg-sage-300 opacity-30 blur-3xl" />
@@ -111,6 +115,18 @@ export default function SplashScreen({ isVisible, duration = 3200 }: Props) {
               <PixelHeart index={1} segment={segment} />
               <PixelHeart index={2} segment={segment} />
             </motion.div>
+
+            {onSkip && (
+              <motion.button
+                onClick={onSkip}
+                className="mt-10 px-5 py-2.5 rounded-full text-xs font-semibold text-sage-700 border border-sage-300 hover:border-sage-500 hover:text-sage-900 hover:bg-white transition-colors"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9, duration: 0.5 }}
+              >
+                Skip
+              </motion.button>
+            )}
           </div>
         </motion.div>
       )}

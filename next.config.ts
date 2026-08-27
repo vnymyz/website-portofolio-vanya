@@ -2,19 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    formats: ["image/avif", "image/webp"],
+    qualities: [65, 75],
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "i.pravatar.cc",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "placehold.co",
-      },
       {
         protocol: "https",
         hostname: "avatars.steamstatic.com",
@@ -24,6 +14,9 @@ const nextConfig: NextConfig = {
         hostname: "cdn.cloudflare.steamstatic.com",
       },
     ],
+  },
+  experimental: {
+    optimizePackageImports: ["framer-motion"],
   },
 };
 

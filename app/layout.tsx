@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { MotionConfig } from "framer-motion";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-jakarta",
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -27,9 +36,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${jakarta.variable} scroll-smooth`}>
-      <body className="bg-sage-100 text-slate-700 antialiased overflow-x-hidden">
-        {children}
+    <html lang="en" className={`${jakarta.variable} ${playfair.variable} scroll-smooth`}>
+      <body className="bg-sage-100 text-sage-800 antialiased overflow-x-hidden">
+        <MotionConfig reducedMotion="user">{children}</MotionConfig>
       </body>
     </html>
   );

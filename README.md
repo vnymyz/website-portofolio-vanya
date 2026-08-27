@@ -1,10 +1,10 @@
 # Vanya Mayazura Puspitaningrum — Portfolio Website
 
-Personal portfolio SPA built with Next.js 15 (App Router), TypeScript, Tailwind CSS v4, and Framer Motion.
+Personal portfolio SPA built with Next.js 16 (App Router), TypeScript, Tailwind CSS v4, and Framer Motion.
 
 ## Tech Stack
 
-- **Framework:** Next.js 15 (App Router)
+- **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS v4 (custom sage green palette)
 - **Animations:** Framer Motion
@@ -64,17 +64,17 @@ npm run lint    # run eslint
 
 - `data/profile.ts` — single source of truth for all content (bio, experience, tech stack, skills, projects, fun facts, social links)
 - `app/page.tsx` — main SPA page: splash screen, scrollspy, section order, social icons, footer with Fun Facts easter-egg link
-- `app/fun-facts/page.tsx` — hidden Fun Facts page (Steam game library, cats, moments, favorite food, hobbies)
+- `app/fun-facts/page.tsx` — hidden Fun Facts page (Steam game library, cats, favorite food, hobbies)
 - `app/api/steam/route.ts` — server-side route that fetches your Steam profile, owned games, and recently played games
 - `app/layout.tsx` — fonts (Plus Jakarta Sans for body, Press Start 2P for splash) + metadata
 - `app/globals.css` — sage green color tokens + custom animations
 - `app/icon.tsx` — generated favicon (green glowing "V")
-- `next.config.ts` — `images.remotePatterns` allowlist for external image hosts (Unsplash, pravatar, placehold.co, Steam CDN)
+- `next.config.ts` — `images.remotePatterns` allowlist for external image hosts (Steam CDN)
 - `public/images/` — your photos (avatar, cats, etc.)
 - `public/gifs/` — hobby GIFs shown on the Fun Facts page
 - `components/SplashScreen.tsx` — pixel-heart loading screen ("Welcome to Vanya's Portfolio")
 - `components/BubbleNav.tsx` — fixed right-side bubble nav with active-section highlight
-- `components/icons.tsx` — custom SVG icons (GitHub, LinkedIn, Steam, Instagram)
+- `components/icons.tsx` — custom SVG icons (GitHub, LinkedIn, Steam)
 - `components/sections/`
   - `About.tsx` — intro, bio, avatar with 3D hover tilt (section 1)
   - `Experience.tsx` — work history timeline (section 2)
@@ -150,9 +150,9 @@ Click the paw print icon in the footer to navigate to `/fun-facts`.
 
 ## Status / TODO
 
-- [ ] Add actual projects to `data/profile.ts` → `projects` array
-- [ ] Replace Unsplash placeholder avatar with a real photo
-- [ ] Replace Unsplash placeholder cat photos with real photos
+- [x] Add actual projects to `data/profile.ts` → `projects` array
+- [x] Replace Unsplash placeholder avatar with a real photo
+- [x] Replace Unsplash placeholder cat photos with real photos
 - [x] Deploy to Vercel — [vanya-mp.vercel.app](https://vanya-mp.vercel.app)
 - [x] Steam library integration on Fun Facts page (profile, top games, recently played)
 - [ ] (Optional) Dark mode toggle

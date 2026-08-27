@@ -40,13 +40,17 @@ export default function FunFactsPage() {
   const [steamError, setSteamError] = useState(false);
 
   useEffect(() => {
-    fetch("/api/steam")
+    const controller = new AbortController();
+    fetch("/api/steam", { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error("Steam fetch failed");
         return res.json();
       })
       .then(setSteam)
-      .catch(() => setSteamError(true));
+      .catch((err) => {
+        if (err.name !== "AbortError") setSteamError(true);
+      });
+    return () => controller.abort();
   }, []);
 
   return (
@@ -116,7 +120,7 @@ export default function FunFactsPage() {
                   className="flex items-center gap-4 mb-8 group"
                 >
                   <div className="relative w-16 h-16 rounded-2xl overflow-hidden ring-4 ring-sage-200 shrink-0">
-                    <Image src={steam.player.avatar} alt={steam.player.name} fill className="object-cover" />
+                    <Image src={steam.player.avatar} alt={steam.player.name} fill sizes="64px" className="object-cover" />
                   </div>
                   <div>
                     <p className="font-serif text-xl font-bold text-sage-900 group-hover:text-sage-700 transition-colors">
@@ -132,7 +136,7 @@ export default function FunFactsPage() {
 
               {steam.recentGames.length > 0 && (
                 <div className="mb-8">
-                  <p className="text-sage-500 text-xs tracking-[0.3em] uppercase font-semibold mb-3">
+                  <p className="text-sage-700 text-xs tracking-[0.3em] uppercase font-semibold mb-3">
                     Recently Played
                   </p>
                   <div className="flex flex-col gap-3">
@@ -165,10 +169,10 @@ export default function FunFactsPage() {
                 </div>
               )}
 
-              <p className="text-sage-500 text-xs tracking-[0.3em] uppercase font-semibold mb-5">
+              <p className="text-sage-700 text-xs tracking-[0.3em] uppercase font-semibold mb-5">
                 Most Played
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {steam.topGames.map((game) => (
                   <div
                     key={game.appid}
@@ -211,21 +215,21 @@ export default function FunFactsPage() {
             </div>
             <h2 className="text-2xl font-extrabold text-sage-900">My 2 Cats I Love</h2>
           </div>
-          <div className="flex items-center justify-center gap-4 sm:gap-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
             {(() => {
               const [cat1, cat2] = profile.funFacts.cats;
               return (
                 <>
-                  <div className="flex-1 max-w-[220px] sm:max-w-xs">
+                  <div className="w-full max-w-[220px] sm:flex-1 sm:max-w-xs">
                     <div className="relative aspect-square rounded-3xl overflow-hidden ring-4 ring-white shadow-xl">
                       <Image src={cat1.photo} alt={cat1.name} fill sizes="280px" className="object-cover" />
                     </div>
                     <p className="mt-3 text-center font-bold text-sage-900 text-lg">{cat1.name}</p>
                   </div>
 
-                  <Heart className="text-sage-700 fill-sage-700 shrink-0" size={32} />
+                  <Heart className="text-sage-700 fill-sage-700 shrink-0 rotate-90 sm:rotate-0" size={32} />
 
-                  <div className="flex-1 max-w-[220px] sm:max-w-xs">
+                  <div className="w-full max-w-[220px] sm:flex-1 sm:max-w-xs">
                     <div className="relative aspect-square rounded-3xl overflow-hidden ring-4 ring-white shadow-xl">
                       <Image src={cat2.photo} alt={cat2.name} fill sizes="280px" className="object-cover" />
                     </div>
@@ -237,7 +241,7 @@ export default function FunFactsPage() {
           </div>
         </motion.section>
 
-        {/* 4. Favorite Food */}
+        {/* 3. Favorite Food */}
         <motion.section
           className="mb-20"
           initial="hidden"
@@ -255,7 +259,7 @@ export default function FunFactsPage() {
           {/* Menu card */}
           <div className="bg-white/85 backdrop-blur rounded-3xl shadow-xl border border-sage-200 px-6 py-10 sm:px-12 sm:py-12">
             <div className="text-center mb-10">
-              <p className="text-sage-500 text-xs tracking-[0.4em] uppercase font-semibold">
+              <p className="text-sage-700 text-xs tracking-[0.3em] uppercase font-semibold">
                 ✦ Vanya&apos;s Picks ✦
               </p>
             </div>
@@ -299,7 +303,7 @@ export default function FunFactsPage() {
           </div>
         </motion.section>
 
-        {/* 5. Hobbies */}
+        {/* 4. Hobbies */}
         <motion.section
           initial="hidden"
           whileInView="show"
@@ -318,7 +322,7 @@ export default function FunFactsPage() {
                 key={h.name}
                 className="group relative w-full aspect-video rounded-3xl overflow-hidden bg-sage-200 border border-sage-200 shadow-sm"
               >
-                <Image src={h.gif} alt={h.name} fill unoptimized className="object-cover" />
+                <Image src={h.gif} alt={`${h.name} hobby`} fill unoptimized className="object-cover" />
                 <div className="absolute inset-0 transition-shadow duration-300 group-hover:shadow-[inset_0_0_40px_20px_rgba(0,0,0,0.45)]" />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/35 to-transparent pt-8 pb-3">
                   <p className="font-serif text-lg font-bold text-white text-center">

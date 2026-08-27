@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Mail, PawPrint } from "lucide-react";
 import SplashScreen from "@/components/SplashScreen";
 import BubbleNav from "@/components/BubbleNav";
@@ -18,9 +17,12 @@ import ContactBanner from "@/components/sections/ContactBanner";
 const SECTIONS = ["about", "experience", "techstack", "skills", "projects", "contact"];
 const SPLASH_DURATION = 3200;
 
+const markVisited = () => sessionStorage.setItem("hasVisited", "true");
+
 export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean | null>(null);
   const [activeSection, setActiveSection] = useState("about");
+  const splashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (sessionStorage.getItem("hasVisited")) {
@@ -29,58 +31,82 @@ export default function Home() {
       return;
     }
     setIsLoading(true);
-    const timer = setTimeout(() => {
+    splashTimer.current = setTimeout(() => {
       setIsLoading(false);
-      sessionStorage.setItem("hasVisited", "true");
+      markVisited();
     }, SPLASH_DURATION);
-    return () => clearTimeout(timer);
+    return () => {
+      if (splashTimer.current) clearTimeout(splashTimer.current);
+    };
   }, []);
 
   useEffect(() => {
     if (isLoading !== false) return;
 
-    // Scrollspy: the active section is the last one whose top has
-    // crossed a line 30% down the viewport. Works for sections of
-    // any height, including short ones at the bottom of the page.
-    const handleScroll = () => {
-      const threshold = window.innerHeight * 0.3;
-      let current = SECTIONS[0];
+    // Scrollspy via IntersectionObserver — no per-scroll-frame layout reads.
+    // A thin band 30% down the viewport marks a section "active" the
+    // moment it crosses into it.
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        // A single callback can batch multiple intersecting entries (e.g.
+        // after a fast scroll), and entry order isn't guaranteed to match
+        // document order — pick the one that's furthest down the page so
+        // the highlighted nav item is always deterministic.
+        const intersecting = entries.filter((e) => e.isIntersecting);
+        if (intersecting.length === 0) return;
+        const winner = intersecting.reduce((furthest, e) =>
+          SECTIONS.indexOf(e.target.id) > SECTIONS.indexOf(furthest.target.id)
+            ? e
+            : furthest
+        );
+        setActiveSection(winner.target.id);
+      },
+      { rootMargin: "-30% 0px -69% 0px", threshold: 0 }
+    );
 
-      for (const id of SECTIONS) {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= threshold) {
-          current = id;
+    SECTIONS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
+
+    // If the last section + footer together are shorter than the
+    // viewport, the band above never crosses it — force it active
+    // once the footer scrolls into view.
+    const footerEl = document.querySelector("footer");
+    const footerObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setActiveSection(SECTIONS[SECTIONS.length - 1]);
         }
-      }
+      },
+      { threshold: 0 }
+    );
+    if (footerEl) footerObserver.observe(footerEl);
 
-      // At the very bottom of the page the last section + footer may
-      // together be shorter than the viewport, so its top never crosses
-      // the threshold — force it active once the page is fully scrolled.
-      const atBottom =
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 1;
-      if (atBottom) {
-        current = SECTIONS[SECTIONS.length - 1];
-      }
-
-      setActiveSection(current);
+    return () => {
+      sectionObserver.disconnect();
+      footerObserver.disconnect();
     };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-
-    return () => window.removeEventListener("scroll", handleScroll);
   }, [isLoading]);
 
   return (
     <>
-      <SplashScreen isVisible={isLoading === true} duration={SPLASH_DURATION} />
+      <SplashScreen
+        isVisible={isLoading === true}
+        duration={SPLASH_DURATION}
+        onSkip={() => {
+          if (splashTimer.current) clearTimeout(splashTimer.current);
+          setIsLoading(false);
+          markVisited();
+        }}
+      />
 
       {isLoading === false && (
         <>
-          <BubbleNav activeSection={activeSection} />
+          <BubbleNav activeSection={activeSection} onNavigate={setActiveSection} />
 
           {/* Top-left social icons */}
-          <div className="fixed left-5 top-5 z-40 flex items-center gap-3">
+          <div className="fixed left-3 top-3 sm:left-5 sm:top-5 z-40 flex items-center gap-3">
             <a
               href={profile.linkedin}
               target="_blank"
@@ -117,28 +143,21 @@ export default function Home() {
             <ContactBanner />
           </main>
 
-          <footer className="relative bg-sage-900 text-sage-400 py-6 text-center text-sm">
+          <footer className="relative bg-sage-900 text-sage-400 py-6 px-4 pb-20 md:pb-6 text-center text-sm">
             <p>
               © 2026{" "}
               <span className="text-sage-200 font-semibold">Vanya</span>
               . All rights reserved.
             </p>
 
-            {/* Fun Facts easter egg link */}
-            <motion.div
-              className="absolute right-6 top-1/2 -translate-y-1/2"
-              whileHover={{ scale: 1.15, rotate: -8 }}
-              whileTap={{ scale: 0.92 }}
+            {/* Fun Facts link */}
+            <Link
+              href="/fun-facts"
+              className="mt-6 inline-flex items-center gap-1.5 text-sage-400 hover:text-sage-200 transition-colors text-xs font-semibold"
             >
-              <Link
-                href="/fun-facts"
-                aria-label="Secret: Fun Facts about me"
-                title="Psst... wanna know a secret?"
-                className="block text-sage-500 hover:text-sage-200 transition-colors"
-              >
-                <PawPrint size={20} />
-              </Link>
-            </motion.div>
+              <PawPrint size={14} />
+              Fun facts about me
+            </Link>
           </footer>
         </>
       )}

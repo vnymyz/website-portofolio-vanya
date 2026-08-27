@@ -9,7 +9,7 @@ export default function ContactBanner() {
   return (
     <section id="contact" className="bg-sage-100 py-20">
       <motion.div
-        className="max-w-3xl mx-auto px-8 text-center"
+        className="max-w-3xl mx-auto px-5 md:px-8 text-center"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
@@ -17,7 +17,7 @@ export default function ContactBanner() {
       >
         <motion.h2
           className="text-3xl md:text-4xl font-extrabold text-sage-900 mb-6"
-          animate={{
+          whileInView={{
             x: [0, -4, 4, -4, 4, -2, 2, 0],
             textShadow: [
               "0 0 0px rgba(119,136,115,0)",
@@ -25,16 +25,12 @@ export default function ContactBanner() {
               "0 0 0px rgba(119,136,115,0)",
             ],
           }}
-          transition={{
-            duration: 0.7,
-            repeat: Infinity,
-            repeatDelay: 3,
-            ease: "easeInOut",
-          }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.7, ease: "easeInOut" }}
         >
           Let&apos;s work together !
         </motion.h2>
-        <p className="text-slate-600 text-base mb-8">Got a project? Contact me.</p>
+        <p className="text-sage-700 text-base mb-8">Got a project? Contact me.</p>
 
         <div className="flex flex-wrap justify-center gap-3">
           <a

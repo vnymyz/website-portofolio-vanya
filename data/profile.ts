@@ -9,7 +9,7 @@ export const profile = {
   phone: "+6281280506903",
   linkedin: "https://www.linkedin.com/in/vnymyz",
   github: "https://github.com/vnymyz",
-  bio: "Information Systems graduate passionate about backend development and solving technical problems. Adaptable, a quick learner, and experienced in teaching tech programs with a commitment to quality.",
+  bio: "Information Systems graduate and Software Engineer Instructor at Haltev IT Learning Center, passionate about backend development and solving technical problems, adaptable, a quick learner, and committed to quality teaching across Fullstack Web Development, Data Science, and AI, and always happy to grow along the way.",
 
   education: [
     {
@@ -106,37 +106,30 @@ export const profile = {
   techStack: [
     {
       category: "Programming Languages",
-      color: "sage",
       items: ["Python", "JavaScript", "TypeScript", "PHP", "C++", "Java", "Lua"],
     },
     {
       category: "Frontend",
-      color: "mint",
       items: ["HTML", "CSS", "React.js", "Next.js", "Vue.js", "Tailwind CSS", "Bootstrap", "DaisyUI", "shadcn/ui"],
     },
     {
       category: "Backend",
-      color: "forest",
       items: ["Node.js", "Express.js", "Laravel", "Golang", "PHP"],
     },
     {
       category: "Database",
-      color: "stone",
       items: ["PostgreSQL", "MySQL", "MongoDB", "Oracle", "SQLite"],
     },
     {
       category: "Data Analysis & Visualization",
-      color: "olive",
       items: ["NumPy", "Pandas", "Matplotlib", "Seaborn", "SciPy", "Streamlit"],
     },
     {
       category: "Machine Learning & AI",
-      color: "moss",
       items: ["Scikit-learn", "TensorFlow", "PyTorch", "NLTK", "spaCy", "OpenCV", "YOLOv8", "Flask"],
     },
     {
       category: "Tools & Platforms",
-      color: "warm",
       items: ["Git", "VS Code", "Figma", "Jupyter Notebook", "Google Colab", "Docker", "Postman", "Laragon", "CapCut"],
     },
   ],
@@ -175,15 +168,48 @@ export const profile = {
   ],
 
   projects: [
-    // Add your projects here
-    // {
-    //   title: "Project Name",
-    //   description: "Brief description",
-    //   tech: ["React", "Node.js"],
-    //   link: "https://...",
-    //   github: "https://...",
-    //   image: "/images/project.png",
-    // }
+    {
+      title: "PT Veertec Magna Technology",
+      description: "Website for an IT system integrator delivering digital infrastructure solutions.",
+      tech: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "shadcn/ui"],
+      link: "https://www.veertec.co.id/",
+      image: "/images/projects/veertec-pic.webp",
+    },
+    {
+      title: "Gembul Cimoet Cat Adoption Website",
+      description: "A cat adoption platform built with the MERN stack.",
+      tech: ["MongoDB", "Express.js", "React.js", "Node.js"],
+      link: "https://gembulcimot.netlify.app/",
+      image: "/images/projects/gembul-cimoet.webp",
+    },
+    {
+      title: "Haltev Trial Class",
+      description: "A trial class booking site for Haltev IT Learning Center.",
+      tech: ["React", "Vite", "Tailwind CSS", "Framer Motion"],
+      link: "https://haltev-trial-class.vercel.app/",
+      image: "/images/projects/haltev-trial-pic.webp",
+    },
+    {
+      title: "Haltev CMS Website",
+      description: "A content management website for Haltev IT Learning Center.",
+      tech: ["Next.js", "React", "Tailwind CSS", "shadcn/ui", "Framer Motion"],
+      link: "https://haltev-cms-frontend.vercel.app/",
+      image: "/images/projects/haltev-cms-remake.webp",
+    },
+    {
+      title: "Velora Career Website",
+      description: "A career and job platform website.",
+      tech: ["React", "Tailwind CSS", "shadcn/ui", "Framer Motion"],
+      link: "https://www.velora-career.com/",
+      image: "/images/projects/velora-career.webp",
+    },
+    {
+      title: "Animal Classifier",
+      description: "A machine learning app that classifies animal images.",
+      tech: ["Python", "Scikit-learn", "TensorFlow", "Streamlit"],
+      link: "https://vanya-animal-classifier.streamlit.app/",
+      image: "/images/projects/animal-class.webp",
+    },
   ] as Array<{
     title: string;
     description: string;
@@ -194,18 +220,13 @@ export const profile = {
   }>,
 
   funFacts: {
-    games: [
-      "Valorant", "CS2", "Stardew Valley", "All Resident Evil games",
-      "Tekken 7 & 8", "Detroit: Become Human", "Cyberpunk 2077",
-      "Persona 3 Reload", "Expedition 33", "All Monster Hunter games", "Dark Souls",
-    ],
     hobbies: [
-      { name: "Gaming", gif: "/gifs/sweaty-speedrunner.gif" },
-      { name: "Swimming", gif: "/gifs/underwater-hello-im-under-water.gif" },
-      { name: "Coding", gif: "/gifs/spike-monkey-typing.gif" },
-      { name: "Drawing", gif: "/gifs/bob-ross.gif" },
-      { name: "Singing", gif: "/gifs/aaaa-hola.gif" },
-      { name: "Reading", gif: "/gifs/what-am-i-reading-squinting.gif" },
+      { name: "Gaming", gif: "/gifs/sweaty-speedrunner.webp" },
+      { name: "Swimming", gif: "/gifs/underwater-hello-im-under-water.webp" },
+      { name: "Coding", gif: "/gifs/spike-monkey-typing.webp" },
+      { name: "Drawing", gif: "/gifs/bob-ross.webp" },
+      { name: "Singing", gif: "/gifs/aaaa-hola.webp" },
+      { name: "Reading", gif: "/gifs/what-am-i-reading-squinting.webp" },
     ],
     favoriteFoods: {
       topPick: "My Mom's Cooking",
@@ -219,12 +240,12 @@ export const profile = {
       {
         name: "Dadang",
         type: "Persian Gray",
-        photo: "/images/dadang.jpeg",
+        photo: "/images/dadang.webp",
       },
       {
         name: "Lea",
         type: "Maine Coon Brown",
-        photo: "/images/lea.jpeg",
+        photo: "/images/lea.webp",
       },
     ],
   },

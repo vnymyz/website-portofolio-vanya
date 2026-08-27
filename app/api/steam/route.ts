@@ -1,11 +1,17 @@
 const STEAM_API_KEY = process.env.STEAM_API_KEY;
 const STEAM_ID = process.env.STEAM_ID;
 
+// Always fetch live — caching this route risks baking an error response
+// (Steam down, rate-limited) in and serving it to everyone until the next
+// revalidation.
+export const dynamic = "force-dynamic";
+
 type SteamPlayer = {
   personaname: string;
   avatarfull: string;
   profileurl: string;
-  personastate: number;
+  // Omitted by Steam for private/friends-only profiles.
+  personastate?: number;
 };
 
 type SteamGame = {
@@ -24,54 +30,68 @@ export async function GET() {
     );
   }
 
-  const [summaryRes, gamesRes] = await Promise.all([
-    fetch(
-      `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_API_KEY}&steamids=${STEAM_ID}`
-    ),
-    fetch(
-      `https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${STEAM_API_KEY}&steamid=${STEAM_ID}&include_appinfo=1&include_played_free_games=1`
-    ),
-  ]);
+  try {
+    const [summaryRes, gamesRes] = await Promise.all([
+      fetch(
+        `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_API_KEY}&steamids=${STEAM_ID}`
+      ),
+      fetch(
+        `https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${STEAM_API_KEY}&steamid=${STEAM_ID}&include_appinfo=1&include_played_free_games=1`
+      ),
+    ]);
 
-  const summaryData = await summaryRes.json();
-  const gamesData = await gamesRes.json();
+    if (!summaryRes.ok || !gamesRes.ok) {
+      return Response.json(
+        { error: "Could not reach Steam" },
+        { status: 502 }
+      );
+    }
 
-  const player: SteamPlayer | undefined = summaryData?.response?.players?.[0];
-  const games: SteamGame[] = gamesData?.response?.games ?? [];
+    const summaryData = await summaryRes.json();
+    const gamesData = await gamesRes.json();
 
-  const topGames = games
-    .sort((a, b) => b.playtime_forever - a.playtime_forever)
-    .slice(0, 9)
-    .map((g) => ({
-      appid: g.appid,
-      name: g.name,
-      playtimeHours: Math.round(g.playtime_forever / 60),
-      header: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/header.jpg`,
-    }));
+    const player: SteamPlayer | undefined = summaryData?.response?.players?.[0];
+    const games: SteamGame[] = gamesData?.response?.games ?? [];
 
-  const recentGames = games
-    .filter((g) => g.rtime_last_played)
-    .sort((a, b) => (b.rtime_last_played ?? 0) - (a.rtime_last_played ?? 0))
-    .slice(0, 3)
-    .map((g) => ({
-      appid: g.appid,
-      name: g.name,
-      playtimeHours: Math.round(g.playtime_forever / 60),
-      playtime2WeeksHours: Math.round((g.playtime_2weeks ?? 0) / 60),
-      header: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/header.jpg`,
-    }));
+    const topGames = [...games]
+      .sort((a, b) => b.playtime_forever - a.playtime_forever)
+      .slice(0, 9)
+      .map((g) => ({
+        appid: g.appid,
+        name: g.name,
+        playtimeHours: Math.round(g.playtime_forever / 60),
+        header: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/header.jpg`,
+      }));
 
-  return Response.json({
-    player: player
-      ? {
-          name: player.personaname,
-          avatar: player.avatarfull,
-          profileUrl: player.profileurl,
-          online: player.personastate !== 0,
-        }
-      : null,
-    gameCount: games.length,
-    topGames,
-    recentGames,
-  });
+    const recentGames = [...games]
+      .filter((g) => g.rtime_last_played)
+      .sort((a, b) => (b.rtime_last_played ?? 0) - (a.rtime_last_played ?? 0))
+      .slice(0, 3)
+      .map((g) => ({
+        appid: g.appid,
+        name: g.name,
+        playtimeHours: Math.round(g.playtime_forever / 60),
+        playtime2WeeksHours: Math.round((g.playtime_2weeks ?? 0) / 60),
+        header: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/header.jpg`,
+      }));
+
+    return Response.json({
+      player: player
+        ? {
+            name: player.personaname,
+            avatar: player.avatarfull,
+            profileUrl: player.profileurl,
+            online: typeof player.personastate === "number" && player.personastate !== 0,
+          }
+        : null,
+      gameCount: games.length,
+      topGames,
+      recentGames,
+    });
+  } catch {
+    return Response.json(
+      { error: "Could not reach Steam" },
+      { status: 502 }
+    );
+  }
 }

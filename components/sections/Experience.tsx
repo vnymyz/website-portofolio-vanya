@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Briefcase, MapPin, Calendar, ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
+import { MapPin, Calendar, ChevronDown } from "lucide-react";
 import { profile } from "@/data/profile";
 
 const typeColor: Record<string, string> = {
-  "Full-time": "bg-sage-700 text-white",
-  "Part-time": "bg-sage-200 text-sage-800",
-  Internship: "bg-sage-300 text-sage-900",
+  "Full-time": "bg-sage-900 text-white",
+  "Part-time": "bg-sage-300 text-sage-900",
+  Internship: "bg-sage-600 text-white",
 };
 
 const COLLAPSED_COUNT = 2;
@@ -21,7 +21,7 @@ export default function Experience() {
 
   return (
     <section id="experience" className="min-h-screen bg-sage-50 py-24">
-      <div className="max-w-6xl mx-auto px-8">
+      <div className="max-w-6xl mx-auto px-5 md:px-8">
         {/* Header */}
         <motion.div
           className="mb-16"
@@ -30,7 +30,7 @@ export default function Experience() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-sage-500 text-xs font-semibold tracking-[0.3em] uppercase mb-2">
+          <p className="text-sage-700 text-xs font-semibold tracking-[0.3em] uppercase mb-2">
             My journey
           </p>
           <h2 className="text-4xl md:text-5xl font-extrabold text-sage-900">
@@ -42,13 +42,13 @@ export default function Experience() {
         {/* Timeline */}
         <div className="relative">
           {/* Vertical line */}
-          <div className="absolute left-5 md:left-8 top-0 bottom-0 w-0.5 bg-sage-300" />
+          <div className="absolute left-3 sm:left-5 md:left-8 top-0 bottom-0 w-0.5 bg-sage-300" />
 
           <div className="space-y-10">
             {profile.experience.map((exp, i) => (
               <motion.div
                 key={`${exp.company}-${exp.role}`}
-                className="relative pl-16 md:pl-24"
+                className="relative pl-10 sm:pl-16 md:pl-24"
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
@@ -56,7 +56,7 @@ export default function Experience() {
               >
                 {/* Timeline dot */}
                 <div
-                  className={`absolute left-3 md:left-5 top-5 w-5 h-5 rounded-full border-2 border-sage-300 flex items-center justify-center ${
+                  className={`absolute left-1 sm:left-3 md:left-5 top-5 w-5 h-5 rounded-full border-2 border-sage-300 flex items-center justify-center ${
                     exp.current ? "bg-sage-700 border-sage-700" : "bg-white"
                   }`}
                 >
@@ -86,15 +86,15 @@ export default function Experience() {
                         {exp.type}
                       </span>
                       {exp.current && (
-                        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700 flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-sage-900 text-sage-100 flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sage-100 animate-pulse" />
                           Current
                         </span>
                       )}
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-4 text-xs text-slate-400 mb-4">
+                  <div className="flex flex-wrap gap-4 text-xs text-sage-600 mb-4">
                     <span className="flex items-center gap-1">
                       <Calendar size={12} /> {exp.period}
                     </span>
@@ -109,7 +109,7 @@ export default function Experience() {
                       .map((h, j) => (
                         <li
                           key={j}
-                          className="flex items-start gap-2 text-slate-500 text-sm"
+                          className="flex items-start gap-2 text-sage-800 text-sm leading-relaxed"
                         >
                           <span className="mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-sage-400" />
                           {h}
@@ -117,34 +117,38 @@ export default function Experience() {
                       ))}
                   </ul>
 
-                  <AnimatePresence initial={false}>
-                    {expanded[i] && exp.highlights.length > COLLAPSED_COUNT && (
-                      <motion.ul
-                        className="space-y-2 overflow-hidden"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      >
-                        {exp.highlights.slice(COLLAPSED_COUNT).map((h, j) => (
-                          <li
-                            key={j}
-                            className="flex items-start gap-2 text-slate-500 text-sm pt-2"
-                          >
-                            <span className="mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-sage-400" />
-                            {h}
-                          </li>
-                        ))}
-                      </motion.ul>
-                    )}
-                  </AnimatePresence>
+                  {exp.highlights.length > COLLAPSED_COUNT && (
+                    <motion.ul
+                      id={`highlights-${i}`}
+                      className="space-y-2 overflow-hidden"
+                      initial={false}
+                      animate={
+                        expanded[i]
+                          ? { height: "auto", opacity: 1 }
+                          : { height: 0, opacity: 0 }
+                      }
+                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {exp.highlights.slice(COLLAPSED_COUNT).map((h, j) => (
+                        <li
+                          key={j}
+                          className="flex items-start gap-2 text-sage-800 text-sm leading-relaxed pt-2"
+                        >
+                          <span className="mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-sage-400" />
+                          {h}
+                        </li>
+                      ))}
+                    </motion.ul>
+                  )}
 
                   {exp.highlights.length > COLLAPSED_COUNT && (
                     <button
                       onClick={() => toggle(i)}
+                      aria-expanded={!!expanded[i]}
+                      aria-controls={`highlights-${i}`}
                       className="mt-3 flex items-center gap-1 text-xs font-semibold text-sage-700 hover:text-sage-900 transition-colors"
                     >
-                      {expanded[i] ? "Show less" : `Show ${exp.highlights.length - COLLAPSED_COUNT} more`}
+                      {expanded[i] ? "Show less" : `Show ${exp.highlights.length - COLLAPSED_COUNT} more highlights`}
                       <motion.span
                         animate={{ rotate: expanded[i] ? 180 : 0 }}
                         transition={{ duration: 0.2 }}
