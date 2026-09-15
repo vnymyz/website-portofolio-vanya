@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Soup, Sparkles, PawPrint, Heart, UtensilsCrossed, Coffee, Sprout, Cookie, IceCreamCone, Crown, Clock } from "lucide-react";
+import { ArrowLeft, Soup, Sparkles, PawPrint, Heart, UtensilsCrossed, Coffee, Sprout, Cookie, IceCreamCone, Crown, Clock, ChevronDown } from "lucide-react";
 import { SteamIcon } from "@/components/icons";
 import { profile } from "@/data/profile";
 
@@ -35,9 +35,15 @@ const sectionHeading = {
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
 };
 
+const FOOD_COLLAPSED_COUNT = 2;
+
 export default function FunFactsPage() {
   const [steam, setSteam] = useState<SteamData | null>(null);
   const [steamError, setSteamError] = useState(false);
+  const [expandedFood, setExpandedFood] = useState<Record<string, boolean>>({});
+
+  const toggleFood = (label: string) =>
+    setExpandedFood((prev) => ({ ...prev, [label]: !prev[label] }));
 
   useEffect(() => {
     const controller = new AbortController();
@@ -70,17 +76,6 @@ export default function FunFactsPage() {
       </Link>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 py-20">
-        {/* Header */}
-        <motion.div
-          className="text-center mb-20"
-          initial={{ opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <h1 className="text-4xl md:text-5xl font-extrabold text-sage-900 mb-3">
-            Fun Facts About Me
-          </h1>
-        </motion.div>
 
         {/* 1. Game Library */}
         <motion.section
@@ -143,9 +138,9 @@ export default function FunFactsPage() {
                     {steam.recentGames.map((game) => (
                       <div
                         key={game.appid}
-                        className="group flex items-center gap-4 rounded-2xl overflow-hidden border border-sage-200 bg-sage-50 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-sage-400/40 hover:border-sage-400"
+                        className="group flex gap-4 rounded-2xl overflow-hidden border border-sage-200 bg-sage-50 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-sage-400/40 hover:border-sage-400"
                       >
-                        <div className="relative w-32 sm:w-44 aspect-[460/215] shrink-0 overflow-hidden">
+                        <div className="relative w-32 sm:w-44 self-stretch min-h-[70px] shrink-0 overflow-hidden">
                           <Image
                             src={game.header}
                             alt={game.name}
@@ -154,14 +149,18 @@ export default function FunFactsPage() {
                             className="object-cover transition-transform duration-300 group-hover:scale-110"
                           />
                         </div>
-                        <div className="py-2 pr-4">
-                          <p className="text-sage-900 text-base font-semibold group-hover:text-sage-700 transition-colors">
+                        <div className="py-3 pr-4 flex-1 min-w-0">
+                          <p className="text-sage-900 text-base font-semibold group-hover:text-sage-700 transition-colors truncate">
                             {game.name}
                           </p>
-                          <p className="text-sage-600 text-xs flex items-center gap-1 mt-1">
-                            <Clock size={12} />
-                            {game.playtime2WeeksHours} hrs in last 2 weeks · {game.playtimeHours.toLocaleString()} hrs total
-                          </p>
+                          <div className="mt-2 flex items-center justify-between gap-2 text-xs">
+                            <span className="text-sage-500 uppercase tracking-wide font-semibold">
+                              Total played
+                            </span>
+                            <span className="text-sage-800 font-medium">
+                              {game.playtimeHours.toLocaleString()} hrs
+                            </span>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -172,7 +171,7 @@ export default function FunFactsPage() {
               <p className="text-sage-700 text-xs tracking-[0.3em] uppercase font-semibold mb-5">
                 Most Played
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
                 {steam.topGames.map((game) => (
                   <div
                     key={game.appid}
@@ -215,25 +214,25 @@ export default function FunFactsPage() {
             </div>
             <h2 className="text-2xl font-extrabold text-sage-900">My 2 Cats I Love</h2>
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
+          <div className="flex flex-row items-center justify-center gap-3 sm:gap-10">
             {(() => {
               const [cat1, cat2] = profile.funFacts.cats;
               return (
                 <>
-                  <div className="w-full max-w-[220px] sm:flex-1 sm:max-w-xs">
+                  <div className="flex-1 max-w-[140px] sm:max-w-xs">
                     <div className="relative aspect-square rounded-3xl overflow-hidden ring-4 ring-white shadow-xl">
                       <Image src={cat1.photo} alt={cat1.name} fill sizes="280px" className="object-cover" />
                     </div>
-                    <p className="mt-3 text-center font-bold text-sage-900 text-lg">{cat1.name}</p>
+                    <p className="mt-3 text-center font-bold text-sage-900 text-sm sm:text-lg">{cat1.name}</p>
                   </div>
 
-                  <Heart className="text-sage-700 fill-sage-700 shrink-0 rotate-90 sm:rotate-0" size={32} />
+                  <Heart className="text-sage-700 fill-sage-700 shrink-0 w-6 h-6 sm:w-8 sm:h-8" />
 
-                  <div className="w-full max-w-[220px] sm:flex-1 sm:max-w-xs">
+                  <div className="flex-1 max-w-[140px] sm:max-w-xs">
                     <div className="relative aspect-square rounded-3xl overflow-hidden ring-4 ring-white shadow-xl">
                       <Image src={cat2.photo} alt={cat2.name} fill sizes="280px" className="object-cover" />
                     </div>
-                    <p className="mt-3 text-center font-bold text-sage-900 text-lg">{cat2.name}</p>
+                    <p className="mt-3 text-center font-bold text-sage-900 text-sm sm:text-lg">{cat2.name}</p>
                   </div>
                 </>
               );
@@ -273,32 +272,70 @@ export default function FunFactsPage() {
               <Crown size={20} className="text-sage-200 shrink-0" />
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-x-12 gap-y-10">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {[
-                { label: "Mains & Sides", icon: UtensilsCrossed, items: profile.funFacts.favoriteFoods.mains },
-                { label: "Vegetables", icon: Sprout, items: profile.funFacts.favoriteFoods.vegetables },
-                { label: "Snacks", icon: Cookie, items: profile.funFacts.favoriteFoods.snacks },
-                { label: "Desserts", icon: IceCreamCone, items: profile.funFacts.favoriteFoods.desserts },
-                { label: "Drinks", icon: Coffee, items: profile.funFacts.favoriteFoods.drinks },
-              ].map(({ label, icon: Icon, items }) => (
-                <div key={label}>
-                  <div className="flex items-center gap-2 mb-5">
-                    <Icon size={16} className="text-sage-700" />
-                    <h4 className="font-serif text-lg font-bold text-sage-900 tracking-wide">
-                      {label}
-                    </h4>
+                { label: "Mains & Sides", photo: "mains", icon: UtensilsCrossed, items: profile.funFacts.favoriteFoods.mains },
+                { label: "Vegetables", photo: "vegetables", icon: Sprout, items: profile.funFacts.favoriteFoods.vegetables },
+                { label: "Snacks", photo: "snacks", icon: Cookie, items: profile.funFacts.favoriteFoods.snacks },
+                { label: "Desserts", photo: "desserts", icon: IceCreamCone, items: profile.funFacts.favoriteFoods.desserts },
+                { label: "Drinks", photo: "drinks", icon: Coffee, items: profile.funFacts.favoriteFoods.drinks },
+              ].map(({ label, photo, icon: Icon, items }) => {
+                const isExpanded = !!expandedFood[label];
+                const hasMore = items.length > FOOD_COLLAPSED_COUNT;
+                const visibleItems = isExpanded ? items : items.slice(0, FOOD_COLLAPSED_COUNT);
+
+                return (
+                  <div
+                    key={label}
+                    className="rounded-3xl overflow-hidden border border-sage-200 bg-white shadow-sm"
+                  >
+                    <div className="relative aspect-[4/3]">
+                      <Image
+                        src={`/images/food/${photo}.webp`}
+                        alt={label}
+                        fill
+                        sizes="(min-width: 1024px) 33vw, 50vw"
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                      <div className="absolute inset-x-0 bottom-0 p-3 flex items-center gap-1.5">
+                        <Icon size={14} className="text-white shrink-0" />
+                        <h4 className="font-serif text-sm sm:text-base font-bold text-white leading-tight">
+                          {label}
+                        </h4>
+                      </div>
+                    </div>
+
+                    <div className="p-3 sm:p-4">
+                      <div className="flex flex-wrap gap-1.5">
+                        {visibleItems.map((f) => (
+                          <span
+                            key={f}
+                            className="text-xs font-medium bg-sage-100 text-sage-800 border border-sage-200 px-2 py-1 rounded-full"
+                          >
+                            {f}
+                          </span>
+                        ))}
+                      </div>
+                      {hasMore && (
+                        <button
+                          onClick={() => toggleFood(label)}
+                          aria-expanded={isExpanded}
+                          className="mt-2 flex items-center gap-1 text-xs font-semibold text-sage-700 hover:text-sage-900 transition-colors"
+                        >
+                          {isExpanded ? "Show less" : `+${items.length - FOOD_COLLAPSED_COUNT} more`}
+                          <motion.span
+                            animate={{ rotate: isExpanded ? 180 : 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <ChevronDown size={12} />
+                          </motion.span>
+                        </button>
+                      )}
+                    </div>
                   </div>
-                  <ul className="space-y-3">
-                    {items.map((f) => (
-                      <li key={f} className="flex items-end gap-2 text-sage-800">
-                        <span className="font-serif">{f}</span>
-                        <span className="flex-1 border-b border-dotted border-sage-300 mb-1.5" />
-                        <Heart size={12} className="text-sage-400 fill-sage-400 mb-1" />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </motion.section>
@@ -316,7 +353,7 @@ export default function FunFactsPage() {
             </div>
             <h2 className="text-2xl font-extrabold text-sage-900">Hobbies</h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {profile.funFacts.hobbies.map((h) => (
               <div
                 key={h.name}

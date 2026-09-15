@@ -38,6 +38,7 @@ yarn-error.log*
 
 # claude code local settings (personal, may hold secrets)
 .claude/settings.local.json
+.claude
 
 # typescript
 *.tsbuildinfo
@@ -49,5 +50,3 @@ context.md
 AGENTS.md
 CLAUDE.md
 data-project.md
-
-.vercel

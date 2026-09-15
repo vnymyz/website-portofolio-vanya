@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { User, Briefcase, Code2, FolderOpen, Zap, Mail } from "lucide-react";
+import { GithubIcon } from "@/components/icons";
 
 const navItems = [
   { id: "about", label: "About", icon: User },
@@ -9,6 +10,7 @@ const navItems = [
   { id: "techstack", label: "Tech Stack", icon: Code2 },
   { id: "skills", label: "Skills", icon: Zap },
   { id: "projects", label: "Projects", icon: FolderOpen },
+  { id: "github", label: "GitHub", icon: GithubIcon },
   { id: "contact", label: "Contact", icon: Mail },
 ];
 

@@ -45,7 +45,6 @@ export default function About() {
         src="/images/green-herosection.webp"
         alt=""
         fill
-        preload
         sizes="100vw"
         quality={65}
         className="object-cover -z-10"
@@ -108,6 +107,7 @@ export default function About() {
                   alt={profile.name}
                   width={384}
                   height={384}
+                  preload
                   sizes="(min-width: 768px) 384px, (min-width: 640px) 288px, 224px"
                   className="w-full h-full object-cover"
                 />

@@ -12,9 +12,10 @@ import Experience from "@/components/sections/Experience";
 import TechStack from "@/components/sections/TechStack";
 import Skills from "@/components/sections/Skills";
 import Projects from "@/components/sections/Projects";
+import GithubActivity from "@/components/sections/GithubActivity";
 import ContactBanner from "@/components/sections/ContactBanner";
 
-const SECTIONS = ["about", "experience", "techstack", "skills", "projects", "contact"];
+const SECTIONS = ["about", "experience", "techstack", "skills", "projects", "github", "contact"];
 const SPLASH_DURATION = 3200;
 
 const markVisited = () => sessionStorage.setItem("hasVisited", "true");
@@ -140,6 +141,7 @@ export default function Home() {
             <TechStack />
             <Skills />
             <Projects />
+            <GithubActivity />
             <ContactBanner />
           </main>
 
