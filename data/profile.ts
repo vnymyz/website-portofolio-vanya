@@ -289,6 +289,32 @@ export const profile = {
         "Adds AI features to a website or app you already have",
       ],
     },
+    {
+      id: "kids",
+      title: "Coding classes for kids",
+      summary:
+        "Friendly, hands-on lessons that help curious kids discover how games and apps are made.",
+      features: [
+        "Starts from zero, no experience needed",
+        "Kids learn by making their own games and animations",
+        "Patient, step-by-step guidance at their own pace",
+        "One-on-one or small group sessions",
+        "Parents can see what their child built",
+      ],
+    },
+    {
+      id: "learn",
+      title: "Coding classes for teens & adults",
+      summary:
+        "Learn to code from scratch, or level up, with a teacher who explains things clearly.",
+      features: [
+        "Beginner friendly, start from zero",
+        "Pick a path: websites, Python, data or AI",
+        "Build real projects you can show to others",
+        "Honest feedback on your work",
+        "One-on-one or small group sessions",
+      ],
+    },
   ],
 
   funFacts: {

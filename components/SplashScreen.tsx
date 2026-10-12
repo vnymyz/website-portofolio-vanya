@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Press_Start_2P } from "next/font/google";
+import { useI18n } from "@/lib/i18n";
 
 const pixelFont = Press_Start_2P({ subsets: ["latin"], weight: "400", preload: false });
 
@@ -68,6 +69,7 @@ function PixelHeart({ index, segment }: { index: number; segment: number }) {
 }
 
 export default function SplashScreen({ isVisible, duration = 3200, onSkip }: Props) {
+  const { t } = useI18n();
   const segment = Math.max((duration / 1000 - HEARTS_VISIBLE_AT) / 3, 0.1);
 
   return (
@@ -75,13 +77,13 @@ export default function SplashScreen({ isVisible, duration = 3200, onSkip }: Pro
       {isVisible && (
         <motion.div
           data-splash
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-sage-100"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-sage-100"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
           role="status"
           aria-live="polite"
-          aria-label="Loading Vanya's portfolio"
+          aria-label={t("splash.aria")}
         >
           {/* Decorative blobs */}
           <div className="absolute top-1/4 left-1/4 w-72 h-72 rounded-full bg-sage-300 opacity-30 blur-3xl" />
@@ -94,7 +96,7 @@ export default function SplashScreen({ isVisible, duration = 3200, onSkip }: Pro
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              Welcome to Vanya&apos;s
+              {t("splash.welcome")}
             </motion.h1>
             <motion.h1
               className={`${pixelFont.className} text-xs md:text-sm text-sage-900 leading-loose`}
@@ -102,7 +104,7 @@ export default function SplashScreen({ isVisible, duration = 3200, onSkip }: Pro
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              Portfolio
+              {t("splash.portfolio")}
             </motion.h1>
 
             {/* Pixel heart loader */}
@@ -125,7 +127,7 @@ export default function SplashScreen({ isVisible, duration = 3200, onSkip }: Pro
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.9, duration: 0.5 }}
               >
-                Skip
+                {t("splash.skip")}
               </motion.button>
             )}
           </div>

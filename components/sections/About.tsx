@@ -3,11 +3,12 @@
 import { motion, useMotionValue, useMotionTemplate, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import { MapPin, ChevronDown, Brain, Code, Download } from "lucide-react";
-import { profile } from "@/data/profile";
+import { useI18n } from "@/lib/i18n";
 
 const CV_PATH = "/cv/vanya-mayazura-cv.pdf";
 
 export default function About() {
+  const { t, profile } = useI18n();
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -66,7 +67,7 @@ export default function About() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <p className="text-sage-900 font-semibold tracking-[0.3em] uppercase text-xs mb-4">
-              Hello, I&apos;m
+              {t("about.hello")}
             </p>
 
             {/* Pixel-wipe reveal — same left-to-right clip-path technique as
@@ -183,7 +184,7 @@ export default function About() {
               rel="noopener noreferrer"
               className="flex md:inline-flex w-fit mx-auto md:mx-0 items-center gap-2 px-5 py-2.5 rounded-full bg-sage-700 text-white text-sm font-semibold hover:bg-sage-900 transition-colors"
             >
-              <Download size={16} /> Download CV
+              <Download size={16} /> {t("about.cv")}
             </a>
           </motion.div>
         </div>
@@ -197,7 +198,7 @@ export default function About() {
           }
           className="flex flex-col items-center gap-1 text-sage-900 font-semibold text-sm group hover:text-sage-700 transition-colors mt-12 sm:mt-24 mx-auto"
         >
-          Explore my work
+          {t("about.explore")}
           <motion.span
             animate={{ y: 6 }}
             transition={{ repeat: Infinity, repeatType: "mirror", duration: 0.9, ease: "easeInOut" }}

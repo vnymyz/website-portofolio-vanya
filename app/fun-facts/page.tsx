@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Soup, Sparkles, PawPrint, Heart, Clock } from "lucide-react";
 import { SteamIcon } from "@/components/icons";
 import FoodCarousel from "@/components/FoodCarousel";
-import { profile } from "@/data/profile";
+import { useI18n } from "@/lib/i18n";
 
 type SteamGame = {
   appid: number;
@@ -37,6 +37,7 @@ const sectionHeading = {
 };
 
 export default function FunFactsPage() {
+  const { t, profile } = useI18n();
   const [steam, setSteam] = useState<SteamData | null>(null);
   const [steamError, setSteamError] = useState(false);
 
@@ -67,7 +68,7 @@ export default function FunFactsPage() {
         className="fixed top-5 left-5 z-40 flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-sage-300 text-sage-700 text-sm font-semibold shadow-md hover:border-sage-500 hover:text-sage-900 transition-colors"
       >
         <ArrowLeft size={16} />
-        Back to Portfolio
+        {t("fun.back")}
       </Link>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 py-20">
@@ -84,19 +85,19 @@ export default function FunFactsPage() {
             <div className="w-11 h-11 rounded-2xl bg-sage-700 text-white flex items-center justify-center">
               <SteamIcon size={28} />
             </div>
-            <h2 className="text-2xl font-extrabold text-sage-900">Game Library</h2>
+            <h2 className="text-2xl font-extrabold text-sage-900">{t("fun.games")}</h2>
           </div>
           {steamError && (
             <div className="flex flex-col items-center justify-center gap-3 bg-white/80 backdrop-blur rounded-3xl py-14 shadow-xl border border-sage-200">
               <SteamIcon size={64} />
-              <p className="text-sage-700 text-sm font-medium">Steam library unavailable right now</p>
+              <p className="text-sage-700 text-sm font-medium">{t("fun.steam.unavailable")}</p>
             </div>
           )}
 
           {!steamError && !steam && (
             <div className="flex flex-col items-center justify-center gap-3 bg-white/80 backdrop-blur rounded-3xl py-14 shadow-xl border border-sage-200">
               <SteamIcon size={64} className="animate-pulse" />
-              <p className="text-sage-700 text-sm font-medium">Loading Steam library…</p>
+              <p className="text-sage-700 text-sm font-medium">{t("fun.steam.loading")}</p>
             </div>
           )}
 
@@ -118,7 +119,7 @@ export default function FunFactsPage() {
                     </p>
                     <p className="text-sage-600 text-sm flex items-center gap-2">
                       <span className={`inline-block w-2 h-2 rounded-full ${steam.player.online ? "bg-green-500" : "bg-sage-400"}`} />
-                      {steam.player.online ? "Online" : "Offline"} · {steam.gameCount} games owned
+                      {steam.player.online ? t("fun.online") : t("fun.offline")} · {t("fun.gamesOwned", { n: steam.gameCount })}
                     </p>
                   </div>
                 </a>
@@ -127,7 +128,7 @@ export default function FunFactsPage() {
               {steam.recentGames.length > 0 && (
                 <div className="mb-8">
                   <p className="text-sage-700 text-xs tracking-[0.3em] uppercase font-semibold mb-3">
-                    Recently Played
+                    {t("fun.recent")}
                   </p>
                   <div className="flex flex-col gap-3">
                     {steam.recentGames.map((game) => (
@@ -150,10 +151,10 @@ export default function FunFactsPage() {
                           </p>
                           <div className="mt-2 flex items-center justify-between gap-2 text-xs">
                             <span className="text-sage-500 uppercase tracking-wide font-semibold">
-                              Total played
+                              {t("fun.totalPlayed")}
                             </span>
                             <span className="text-sage-800 font-medium">
-                              {game.playtimeHours.toLocaleString()} hrs
+                              {game.playtimeHours.toLocaleString()} {t("fun.hrs")}
                             </span>
                           </div>
                         </div>
@@ -164,7 +165,7 @@ export default function FunFactsPage() {
               )}
 
               <p className="text-sage-700 text-xs tracking-[0.3em] uppercase font-semibold mb-5">
-                Most Played
+                {t("fun.mostPlayed")}
               </p>
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
                 {steam.topGames.map((game) => (
@@ -185,7 +186,7 @@ export default function FunFactsPage() {
                       <p className="text-sage-900 text-sm font-semibold truncate group-hover:text-sage-700 transition-colors">{game.name}</p>
                       <p className="text-sage-600 text-xs flex items-center gap-1 mt-0.5">
                         <Clock size={12} />
-                        {game.playtimeHours.toLocaleString()} hrs
+                        {game.playtimeHours.toLocaleString()} {t("fun.hrs")}
                       </p>
                     </div>
                   </div>
@@ -207,7 +208,7 @@ export default function FunFactsPage() {
             <div className="w-11 h-11 rounded-2xl bg-sage-700 text-white flex items-center justify-center">
               <PawPrint size={20} />
             </div>
-            <h2 className="text-2xl font-extrabold text-sage-900">My 2 Cats I Love</h2>
+            <h2 className="text-2xl font-extrabold text-sage-900">{t("fun.cats")}</h2>
           </div>
           <div className="flex flex-row items-center justify-center gap-3 sm:gap-10">
             {(() => {
@@ -247,7 +248,7 @@ export default function FunFactsPage() {
             <div className="w-11 h-11 rounded-2xl bg-sage-700 text-white flex items-center justify-center">
               <Soup size={20} />
             </div>
-            <h2 className="text-2xl font-extrabold text-sage-900">Favorite Food &amp; Drinks</h2>
+            <h2 className="text-2xl font-extrabold text-sage-900">{t("fun.food")}</h2>
           </div>
 
           <FoodCarousel />
@@ -264,7 +265,7 @@ export default function FunFactsPage() {
             <div className="w-11 h-11 rounded-2xl bg-sage-700 text-white flex items-center justify-center">
               <Sparkles size={20} />
             </div>
-            <h2 className="text-2xl font-extrabold text-sage-900">Hobbies</h2>
+            <h2 className="text-2xl font-extrabold text-sage-900">{t("fun.hobbies")}</h2>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {profile.funFacts.hobbies.map((h) => (
@@ -272,7 +273,7 @@ export default function FunFactsPage() {
                 key={h.name}
                 className="group relative w-full aspect-video rounded-3xl overflow-hidden bg-sage-200 border border-sage-200 shadow-sm"
               >
-                <Image src={h.gif} alt={`${h.name} hobby`} fill unoptimized className="object-cover" />
+                <Image src={h.gif} alt={t("fun.hobbyAlt", { name: h.name })} fill unoptimized className="object-cover" />
                 <div className="absolute inset-0 transition-shadow duration-300 group-hover:shadow-[inset_0_0_40px_20px_rgba(0,0,0,0.45)]" />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/35 to-transparent pt-8 pb-3">
                   <p className="font-serif text-lg font-bold text-white text-center">

@@ -2,10 +2,13 @@
 
 import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "@/components/icons";
+import { GithubIcon, LinkedinIcon, WhatsappIcon } from "@/components/icons";
 import { profile } from "@/data/profile";
+import { useI18n } from "@/lib/i18n";
+import { getWhatsappUrl } from "@/lib/whatsapp";
 
 export default function ContactBanner() {
+  const { lang, t } = useI18n();
   return (
     <section id="contact" className="bg-sage-100 py-20">
       <motion.div
@@ -16,9 +19,9 @@ export default function ContactBanner() {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-sage-900 mb-6">
-          Let&apos;s work together !
+          {t("contact.heading")}
         </h2>
-        <p className="text-sage-700 text-base mb-8">Got a project? Contact me.</p>
+        <p className="text-sage-700 text-base mb-8">{t("contact.text")}</p>
 
         <div className="flex flex-wrap justify-center gap-3">
           <a
@@ -42,6 +45,14 @@ export default function ContactBanner() {
             className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-sage-700 text-sage-700 text-sm font-semibold hover:bg-sage-700 hover:text-white transition-colors"
           >
             <Mail size={15} /> Email
+          </a>
+          <a
+            href={getWhatsappUrl(lang)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-sage-700 text-sage-700 text-sm font-semibold hover:bg-sage-700 hover:text-white transition-colors"
+          >
+            <WhatsappIcon size={15} /> WhatsApp
           </a>
         </div>
       </motion.div>

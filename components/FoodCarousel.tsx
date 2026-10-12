@@ -7,8 +7,9 @@ import useEmblaCarousel from "embla-carousel-react";
 import * as Tabs from "@radix-ui/react-tabs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { profile } from "@/data/profile";
+import { useI18n } from "@/lib/i18n";
 
-const categories = profile.funFacts.favoriteFoods.categories;
+type Category = (typeof profile.funFacts.favoriteFoods.categories)[number];
 
 const slugify = (name: string) =>
   name
@@ -35,7 +36,8 @@ const arrowClass =
 
 // One food at a time. Remounted per category (see `key` below), so its
 // position resets to the first food without any effect-driven state.
-function FoodSlider({ category }: { category: (typeof categories)[number] }) {
+function FoodSlider({ category }: { category: Category }) {
+  const { t } = useI18n();
   const reduced = useReducedMotion();
   const [viewportRef, embla] = useEmblaCarousel({ align: "center", loop: false });
   const [current, setCurrent] = useState(0);
@@ -71,7 +73,7 @@ function FoodSlider({ category }: { category: (typeof categories)[number] }) {
         <button
           onClick={() => goTo(current - 1)}
           disabled={current === 0}
-          aria-label="Previous food"
+          aria-label={t("food.prev")}
           className={arrowClass}
         >
           <ChevronLeft size={20} />
@@ -83,7 +85,7 @@ function FoodSlider({ category }: { category: (typeof categories)[number] }) {
           tabIndex={0}
           role="region"
           aria-roledescription="carousel"
-          aria-label={`${category.label} I like`}
+          aria-label={t("food.region", { label: category.label })}
           className="min-w-0 flex-1 cursor-grab overflow-hidden active:cursor-grabbing"
         >
           <div className="flex">
@@ -106,7 +108,7 @@ function FoodSlider({ category }: { category: (typeof categories)[number] }) {
         <button
           onClick={() => goTo(current + 1)}
           disabled={current === total - 1}
-          aria-label="Next food"
+          aria-label={t("food.next")}
           className={arrowClass}
         >
           <ChevronRight size={20} />
@@ -118,7 +120,7 @@ function FoodSlider({ category }: { category: (typeof categories)[number] }) {
           <button
             key={item}
             onClick={() => goTo(i)}
-            aria-label={`Go to ${item}`}
+            aria-label={t("food.goTo", { name: item })}
             aria-current={i === current ? "true" : undefined}
             className="flex h-6 w-6 items-center justify-center"
           >
@@ -132,13 +134,15 @@ function FoodSlider({ category }: { category: (typeof categories)[number] }) {
       </div>
 
       <p className="mt-1 text-center text-sm font-medium text-sage-700" aria-live="polite">
-        {current + 1} of {total}
+        {t("food.count", { n: current + 1, total })}
       </p>
     </div>
   );
 }
 
 export default function FoodCarousel() {
+  const { t, profile: localized } = useI18n();
+  const categories = localized.funFacts.favoriteFoods.categories;
   const [activeId, setActiveId] = useState(categories[0].id);
   const category = categories.find((c) => c.id === activeId) ?? categories[0];
 
@@ -146,7 +150,7 @@ export default function FoodCarousel() {
     <Tabs.Root value={activeId} onValueChange={setActiveId}>
       <div className="overflow-x-auto pb-1">
         <Tabs.List
-          aria-label="Food categories"
+          aria-label={t("food.categories")}
           className="mx-auto flex w-fit divide-x divide-sage-300 border border-sage-300 bg-white"
         >
           {categories.map((c) => (

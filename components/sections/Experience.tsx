@@ -4,7 +4,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import SectionHeader from "@/components/SectionHeader";
 import { MapPin, Calendar, ChevronDown } from "lucide-react";
-import { profile } from "@/data/profile";
+import { useI18n } from "@/lib/i18n";
+import type { UiKey } from "@/data/ui";
 
 const typeColor: Record<string, string> = {
   "Full-time": "bg-sage-900 text-white",
@@ -15,15 +16,16 @@ const typeColor: Record<string, string> = {
 const COLLAPSED_COUNT = 2;
 
 export default function Experience() {
+  const { t, profile } = useI18n();
   const [expanded, setExpanded] = useState<Record<number, boolean>>({});
 
   const toggle = (i: number) =>
     setExpanded((prev) => ({ ...prev, [i]: !prev[i] }));
 
   return (
-    <section id="experience" className="bg-sage-50 py-24">
+    <section id="experience" className="bg-sage-50 pt-12 pb-24">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
-        <SectionHeader eyebrow="Where I&apos;ve been working" title="Experience" />
+        <SectionHeader eyebrow={t("experience.eyebrow")} title={t("experience.title")} />
 
         {/* Timeline */}
         <div className="relative">
@@ -65,12 +67,12 @@ export default function Experience() {
                           typeColor[exp.type] ?? "bg-sage-100 text-sage-700"
                         }`}
                       >
-                        {exp.type}
+                        {t(`type.${exp.type}` as UiKey)}
                       </span>
                       {exp.current && (
                         <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-sage-900 text-sage-100 flex items-center gap-1">
                           <span className="w-1.5 h-1.5 rounded-full bg-sage-100 animate-pulse" />
-                          Current
+                          {t("experience.current")}
                         </span>
                       )}
                     </div>
@@ -130,7 +132,9 @@ export default function Experience() {
                       aria-controls={`highlights-${i}`}
                       className="mt-3 flex items-center gap-1 text-xs font-semibold text-sage-700 hover:text-sage-900 transition-colors"
                     >
-                      {expanded[i] ? "Show less" : `Show ${exp.highlights.length - COLLAPSED_COUNT} more highlights`}
+                      {expanded[i]
+                        ? t("experience.showLess")
+                        : t("experience.showMore", { n: exp.highlights.length - COLLAPSED_COUNT })}
                       <motion.span
                         animate={{ rotate: expanded[i] ? 180 : 0 }}
                         transition={{ duration: 0.2 }}

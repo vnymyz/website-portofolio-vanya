@@ -1,19 +1,25 @@
-import { Globe, Workflow, BarChart3, Brain, Check } from "lucide-react";
+"use client";
+
+import { Globe, Workflow, BarChart3, Brain, GraduationCap, BookOpen, Check } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
-import { profile } from "@/data/profile";
+import { useI18n } from "@/lib/i18n";
 
 const serviceIcon = {
   web: Globe,
   automation: Workflow,
   data: BarChart3,
   ai: Brain,
+  kids: GraduationCap,
+  learn: BookOpen,
 } as const;
 
 export default function Services() {
+  const { t, profile } = useI18n();
+
   return (
-    <section id="services" className="bg-sage-50 py-24">
+    <section id="services" className="bg-sage-50 pt-24 pb-12">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
-        <SectionHeader eyebrow="What I can build for you" title="Services" />
+        <SectionHeader eyebrow={t("services.eyebrow")} title={t("services.title")} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {profile.services.map((service) => {
@@ -21,7 +27,7 @@ export default function Services() {
             return (
               <div
                 key={service.id}
-                className="glass-card rounded-xl p-6 shadow-sm flex flex-col"
+                className="glass-card rounded-xl p-6 shadow-sm flex flex-col md:[&:last-child:nth-child(odd)]:col-span-2"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 shrink-0 rounded-xl bg-sage-700 text-white flex items-center justify-center">
@@ -43,7 +49,6 @@ export default function Services() {
                     </li>
                   ))}
                 </ul>
-
               </div>
             );
           })}

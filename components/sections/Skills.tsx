@@ -1,20 +1,24 @@
+"use client";
+
 import SectionHeader from "@/components/SectionHeader";
-import { profile } from "@/data/profile";
+import { useI18n } from "@/lib/i18n";
 
 const groupLabel =
   "inline-block bg-sage-700 text-white text-sm font-bold px-4 py-1.5 rounded-full";
 
 export default function Skills() {
+  const { t, profile } = useI18n();
+
   return (
     <section id="skills" className="py-24 bg-sage-50">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
-        <SectionHeader eyebrow="What I&apos;ve been learning" title="Skills & Background" />
+        <SectionHeader eyebrow={t("skills.eyebrow")} title={t("skills.title")} />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-0">
           {/* LEFT: Technical focus + Soft skills */}
           <div className="space-y-10 lg:pr-12">
             <div>
-              <h3 className={`${groupLabel} mb-6`}>Technical focus</h3>
+              <h3 className={`${groupLabel} mb-6`}>{t("skills.technicalFocus")}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {profile.technicalFocus.map((item) => (
                   <div
@@ -29,7 +33,7 @@ export default function Skills() {
             </div>
 
             <div>
-              <h3 className={`${groupLabel} mb-6`}>Soft skills</h3>
+              <h3 className={`${groupLabel} mb-6`}>{t("skills.softSkills")}</h3>
               <div className="flex flex-wrap gap-2">
                 {profile.softSkills.map((skill) => (
                   <span
@@ -46,7 +50,7 @@ export default function Skills() {
           {/* RIGHT: Certificates + Education + Languages */}
           <div className="space-y-10 lg:border-l lg:border-sage-300 lg:pl-12">
             <div>
-              <h3 className={`${groupLabel} mb-5`}>Certificates</h3>
+              <h3 className={`${groupLabel} mb-5`}>{t("skills.certificates")}</h3>
               <ul className="space-y-3">
                 {profile.certificates.map((cert) => (
                   <li key={cert.title} className="flex items-start gap-2.5">
@@ -61,7 +65,7 @@ export default function Skills() {
             </div>
 
             <div>
-              <h3 className={`${groupLabel} mb-5`}>Education</h3>
+              <h3 className={`${groupLabel} mb-5`}>{t("skills.education")}</h3>
               <ul className="space-y-4">
                 {profile.education.map((edu) => (
                   <li key={edu.institution} className="flex items-start gap-2.5">
@@ -72,7 +76,9 @@ export default function Skills() {
                         <p className="text-sage-700 text-xs mt-0.5">
                           {edu.degree}
                           {edu.gpa && (
-                            <span className="text-sage-600"> · GPA {edu.gpa}/4.00</span>
+                            <span className="text-sage-600">
+                              {" "}· {t("skills.gpa")} {edu.gpa}/4.00
+                            </span>
                           )}
                         </p>
                         <p className="text-sage-600 text-xs mt-0.5">{edu.location}</p>
@@ -87,7 +93,7 @@ export default function Skills() {
             </div>
 
             <div>
-              <h3 className={`${groupLabel} mb-5`}>Languages</h3>
+              <h3 className={`${groupLabel} mb-5`}>{t("skills.languages")}</h3>
               <ul className="space-y-3">
                 {profile.languages.map((lang) => (
                   <li key={lang.name} className="flex items-start gap-2.5">

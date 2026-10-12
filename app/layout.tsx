@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import { MotionConfig } from "framer-motion";
 import { siteUrl } from "@/lib/site";
+import LanguageToggle from "@/components/LanguageToggle";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -69,7 +70,10 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: visitedScript }} />
       </head>
       <body className="bg-sage-100 text-sage-800 antialiased overflow-x-hidden">
-        <MotionConfig reducedMotion="user">{children}</MotionConfig>
+        <MotionConfig reducedMotion="user">
+          <LanguageToggle />
+          {children}
+        </MotionConfig>
       </body>
     </html>
   );

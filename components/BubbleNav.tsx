@@ -3,21 +3,24 @@
 import { motion } from "framer-motion";
 import { User, Briefcase, Code2, FolderOpen, Zap, Mail, Handshake } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
+import { useI18n } from "@/lib/i18n";
+import type { UiKey } from "@/data/ui";
 
 const navItems = [
-  { id: "about", label: "About", icon: User },
-  { id: "projects", label: "Projects", icon: FolderOpen },
-  { id: "services", label: "Services", icon: Handshake },
-  { id: "experience", label: "Experience", icon: Briefcase },
-  { id: "techstack", label: "Tech Stack", icon: Code2 },
-  { id: "skills", label: "Skills", icon: Zap },
-  { id: "github", label: "GitHub", icon: GithubIcon },
-  { id: "contact", label: "Contact", icon: Mail },
+  { id: "about", icon: User },
+  { id: "projects", icon: FolderOpen },
+  { id: "services", icon: Handshake },
+  { id: "experience", icon: Briefcase },
+  { id: "techstack", icon: Code2 },
+  { id: "skills", icon: Zap },
+  { id: "github", icon: GithubIcon },
+  { id: "contact", icon: Mail },
 ];
 
-// Phone bar has no room for an 8th icon; GitHub is still in the desktop nav
-// and the top-left social icons.
-const mobileNavItems = navItems.filter((item) => item.id !== "github");
+// The phone bar only gets the important sections so it stays short and every
+// label is readable. The rest are one scroll away and on the desktop nav.
+const MOBILE_IDS = ["about", "projects", "services", "experience", "contact"];
+const mobileNavItems = navItems.filter((item) => MOBILE_IDS.includes(item.id));
 
 interface Props {
   activeSection: string;
@@ -25,6 +28,7 @@ interface Props {
 }
 
 export default function BubbleNav({ activeSection, onNavigate }: Props) {
+  const { t } = useI18n();
   const scrollTo = (id: string) => {
     // Set active immediately on click — the scroll-position observer only
     // fires on a threshold *change*, so it can miss this when the target
@@ -43,12 +47,13 @@ export default function BubbleNav({ activeSection, onNavigate }: Props) {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.5, duration: 0.6 }}
       >
-        {navItems.map(({ id, label, icon: Icon }) => {
+        {navItems.map(({ id, icon: Icon }) => {
           const isActive = activeSection === id;
+          const label = t(`nav.${id}` as UiKey);
           return (
             <div key={id} className="relative group flex items-center justify-end">
               {/* Tooltip */}
-              <span className="absolute right-14 whitespace-nowrap text-xs font-semibold text-sage-700 bg-white border border-sage-300 px-2.5 py-1 rounded-full shadow-sm opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 pointer-events-none">
+              <span className="absolute right-14 whitespace-nowrap text-xs font-semibold text-sage-700 bg-white border border-sage-300 px-2.5 py-1 rounded-full shadow-sm opacity-0 group-hover:opacity-100 group-has-[:focus-visible]:opacity-100 transition-opacity duration-200 pointer-events-none">
                 {label}
               </span>
 
@@ -78,8 +83,9 @@ export default function BubbleNav({ activeSection, onNavigate }: Props) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.6 }}
       >
-        {mobileNavItems.map(({ id, label, icon: Icon }) => {
+        {mobileNavItems.map(({ id, icon: Icon }) => {
           const isActive = activeSection === id;
+          const label = t(`nav.${id}` as UiKey);
           return (
             <button
               key={id}

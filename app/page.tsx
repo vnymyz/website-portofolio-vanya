@@ -5,8 +5,10 @@ import Link from "next/link";
 import { Mail, PawPrint } from "lucide-react";
 import SplashScreen from "@/components/SplashScreen";
 import BubbleNav from "@/components/BubbleNav";
-import { GithubIcon, LinkedinIcon } from "@/components/icons";
+import { GithubIcon, LinkedinIcon, WhatsappIcon } from "@/components/icons";
 import { profile } from "@/data/profile";
+import { getWhatsappUrl } from "@/lib/whatsapp";
+import { useI18n } from "@/lib/i18n";
 import About from "@/components/sections/About";
 import Experience from "@/components/sections/Experience";
 import TechStack from "@/components/sections/TechStack";
@@ -22,6 +24,7 @@ const SPLASH_DURATION = 3200;
 const markVisited = () => sessionStorage.setItem("hasVisited", "true");
 
 export default function Home() {
+  const { lang, t } = useI18n();
   const [isLoading, setIsLoading] = useState<boolean | null>(null);
   const [activeSection, setActiveSection] = useState("about");
   const splashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -116,7 +119,7 @@ export default function Home() {
       <BubbleNav activeSection={activeSection} onNavigate={setActiveSection} />
 
       {/* Top-left social icons */}
-      <div className="fixed left-3 top-3 sm:left-5 sm:top-5 z-40 flex items-center gap-3">
+      <div className="fixed left-3 top-3 sm:left-5 sm:top-5 z-40 flex items-center gap-2 sm:gap-3">
         <a
           href={profile.linkedin}
           target="_blank"
@@ -142,6 +145,15 @@ export default function Home() {
         >
           <Mail size={15} />
         </a>
+        <a
+          href={getWhatsappUrl(lang)}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="WhatsApp"
+          className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md transition-all hover:bg-sage-700 hover:border-sage-700 hover:text-white hover:shadow-lg hover:shadow-sage-400/40"
+        >
+          <WhatsappIcon size={15} />
+        </a>
       </div>
 
       <main>
@@ -159,7 +171,7 @@ export default function Home() {
         <p>
           © 2026{" "}
           <span className="text-sage-200 font-semibold">Vanya</span>
-          . All rights reserved.
+          . {t("footer.rights")}
         </p>
 
         {/* Fun Facts link */}
@@ -168,7 +180,7 @@ export default function Home() {
           className="mt-6 inline-flex items-center gap-1.5 text-sage-400 hover:text-sage-200 transition-colors text-xs font-semibold"
         >
           <PawPrint size={14} />
-          Fun facts about me
+          {t("footer.funFacts")}
         </Link>
       </footer>
     </>

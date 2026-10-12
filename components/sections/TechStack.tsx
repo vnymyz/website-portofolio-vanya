@@ -2,8 +2,10 @@
 
 import { Code2, Layout, Server, Database as DatabaseIcon, BarChart3, Brain, Wrench } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
-import { profile } from "@/data/profile";
+import { profile as profileEn } from "@/data/profile";
+import { useI18n } from "@/lib/i18n";
 
+// Keyed by the English category name; translated entries are matched by index.
 const categoryStyle: Record<string, { badge: string; header: string; icon: typeof Code2 }> = {
   "Programming Languages": {
     badge: "bg-sage-900 text-white",
@@ -49,25 +51,25 @@ const defaultStyle = {
 };
 
 export default function TechStack() {
+  const { t, profile } = useI18n();
+
   return (
     <section id="techstack" className="bg-white py-24">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
-        <SectionHeader eyebrow="What I&apos;ve been using" title="Tech Stack" />
+        <SectionHeader eyebrow={t("techstack.eyebrow")} title={t("techstack.title")} />
 
-        {/* Categories grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {profile.techStack.map((cat) => {
-            const style = categoryStyle[cat.category] ?? defaultStyle;
+          {profile.techStack.map((cat, i) => {
+            const englishName = profileEn.techStack[i].category;
+            const style = categoryStyle[englishName] ?? defaultStyle;
             const Icon = style.icon;
 
             return (
               <div
-                key={cat.category}
+                key={englishName}
                 className="glass-card rounded-xl p-6 border border-sage-300 hover:shadow-md transition-shadow"
               >
-                <h3
-                  className={`flex items-center gap-2 font-bold text-base mb-4 ${style.header}`}
-                >
+                <h3 className={`flex items-center gap-2 font-bold text-base mb-4 ${style.header}`}>
                   <Icon size={18} />
                   {cat.category}
                 </h3>

@@ -6,11 +6,12 @@ import { motion } from "framer-motion";
 import { ExternalLink, FolderOpen, ChevronLeft, ChevronRight } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import SectionHeader from "@/components/SectionHeader";
-import { profile } from "@/data/profile";
+import { useI18n } from "@/lib/i18n";
 
 const PROJECTS_PER_PAGE = 3;
 
 export default function Projects() {
+  const { t, profile } = useI18n();
   const hasProjects = profile.projects.length > 0;
   const [page, setPage] = useState(0);
 
@@ -27,7 +28,7 @@ export default function Projects() {
   return (
     <section id="projects" className="bg-white py-24">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
-        <SectionHeader eyebrow="What I&apos;ve shipped" title="Projects" />
+        <SectionHeader eyebrow={t("projects.eyebrow")} title={t("projects.title")} />
 
         {hasProjects ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -78,7 +79,7 @@ export default function Projects() {
                         rel="noopener noreferrer"
                         className="flex items-center gap-1.5 text-xs font-semibold text-sage-700 hover:text-sage-900 transition-colors"
                       >
-                        <GithubIcon size={14} /> Code
+                        <GithubIcon size={14} /> {t("projects.code")}
                       </a>
                     )}
                     {project.link && (
@@ -88,7 +89,7 @@ export default function Projects() {
                         rel="noopener noreferrer"
                         className="flex items-center gap-1.5 text-xs font-semibold text-sage-700 hover:text-sage-900 transition-colors"
                       >
-                        <ExternalLink size={14} /> Live Demo
+                        <ExternalLink size={14} /> {t("projects.demo")}
                       </a>
                     )}
                   </div>
@@ -100,13 +101,13 @@ export default function Projects() {
 
         {hasProjects && pageCount > 1 && (
           <nav
-            aria-label="Projects pages"
+            aria-label={t("projects.pages")}
             className="flex items-center justify-center gap-4 mt-12"
           >
             <button
               onClick={() => goToPage(page - 1)}
               disabled={page === 0}
-              aria-label="Previous page"
+              aria-label={t("pager.prev")}
               className="w-9 h-9 rounded-full flex items-center justify-center border border-sage-300 text-sage-700 hover:border-sage-500 hover:bg-sage-100 transition-colors disabled:opacity-30 disabled:pointer-events-none"
             >
               <ChevronLeft size={16} />
@@ -117,7 +118,7 @@ export default function Projects() {
                 <button
                   key={i}
                   onClick={() => goToPage(i)}
-                  aria-label={`Go to page ${i + 1}`}
+                  aria-label={t("pager.goTo", { n: i + 1 })}
                   aria-current={page === i ? "page" : undefined}
                   className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${
                     page === i
@@ -133,7 +134,7 @@ export default function Projects() {
             <button
               onClick={() => goToPage(page + 1)}
               disabled={page === pageCount - 1}
-              aria-label="Next page"
+              aria-label={t("pager.next")}
               className="w-9 h-9 rounded-full flex items-center justify-center border border-sage-300 text-sage-700 hover:border-sage-500 hover:bg-sage-100 transition-colors disabled:opacity-30 disabled:pointer-events-none"
             >
               <ChevronRight size={16} />
@@ -154,11 +155,10 @@ export default function Projects() {
               <FolderOpen size={40} className="text-sage-400" />
             </div>
             <h3 className="text-sage-700 font-bold text-xl mb-2">
-              Projects Coming Soon
+              {t("projects.empty.title")}
             </h3>
             <p className="text-sage-600 text-sm max-w-sm leading-relaxed">
-              I&apos;m currently curating my best work. Check back soon — or
-              visit my GitHub to see what I&apos;ve been building.
+              {t("projects.empty.text")}
             </p>
             <a
               href={profile.github}
@@ -166,7 +166,7 @@ export default function Projects() {
               rel="noopener noreferrer"
               className="mt-8 flex items-center gap-2 px-6 py-3 rounded-full border-2 border-sage-700 text-sage-700 text-sm font-semibold hover:bg-sage-700 hover:text-white transition-colors"
             >
-              <GithubIcon size={16} /> Visit GitHub
+              <GithubIcon size={16} /> {t("projects.empty.cta")}
             </a>
           </motion.div>
         )}
