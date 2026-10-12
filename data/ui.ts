@@ -38,6 +38,8 @@ const en = {
   "skills.title": "Skills & Background",
   "services.eyebrow": "What I can build for you",
   "services.title": "Services",
+  "services.canBuild": "What I can build",
+  "services.classes": "Coding classes",
   "github.eyebrow": "What I've been building",
   "github.title": "GitHub Activity",
 
@@ -154,6 +156,8 @@ const id: Record<UiKey, string> = {
   "skills.title": "Keahlian & Latar Belakang",
   "services.eyebrow": "Yang bisa saya buat untuk Anda",
   "services.title": "Layanan",
+  "services.canBuild": "Yang bisa saya buat",
+  "services.classes": "Kelas coding",
   "github.eyebrow": "Yang sedang saya bangun",
   "github.title": "Aktivitas GitHub",
 
