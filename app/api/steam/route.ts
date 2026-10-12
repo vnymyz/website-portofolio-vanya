@@ -41,6 +41,16 @@ export async function GET() {
     ]);
 
     if (!summaryRes.ok || !gamesRes.ok) {
+      // 401/403 = Steam rejected the key; 5xx/429 = Steam down or rate-limited.
+      console.error(
+        `[steam] Steam returned summary=${summaryRes.status} games=${gamesRes.status}` +
+          (summaryRes.status === 401 ||
+          summaryRes.status === 403 ||
+          gamesRes.status === 401 ||
+          gamesRes.status === 403
+            ? " — Renew Steam API key: STEAM_API_KEY is invalid or revoked"
+            : "")
+      );
       return Response.json(
         { error: "Could not reach Steam" },
         { status: 502 }
@@ -88,7 +98,9 @@ export async function GET() {
       topGames,
       recentGames,
     });
-  } catch {
+  } catch (err) {
+    // Network failure before any status came back (DNS, timeout, offline).
+    console.error("[steam] Request to Steam failed:", err);
     return Response.json(
       { error: "Could not reach Steam" },
       { status: 502 }

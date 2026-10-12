@@ -74,6 +74,7 @@ export default function SplashScreen({ isVisible, duration = 3200, onSkip }: Pro
     <AnimatePresence>
       {isVisible && (
         <motion.div
+          data-splash
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-sage-100"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}

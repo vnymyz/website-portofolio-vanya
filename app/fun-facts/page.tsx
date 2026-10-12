@@ -4,8 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Soup, Sparkles, PawPrint, Heart, UtensilsCrossed, Coffee, Sprout, Cookie, IceCreamCone, Crown, Clock, ChevronDown } from "lucide-react";
+import { ArrowLeft, Soup, Sparkles, PawPrint, Heart, Clock } from "lucide-react";
 import { SteamIcon } from "@/components/icons";
+import FoodCarousel from "@/components/FoodCarousel";
 import { profile } from "@/data/profile";
 
 type SteamGame = {
@@ -35,15 +36,9 @@ const sectionHeading = {
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
 };
 
-const FOOD_COLLAPSED_COUNT = 2;
-
 export default function FunFactsPage() {
   const [steam, setSteam] = useState<SteamData | null>(null);
   const [steamError, setSteamError] = useState(false);
-  const [expandedFood, setExpandedFood] = useState<Record<string, boolean>>({});
-
-  const toggleFood = (label: string) =>
-    setExpandedFood((prev) => ({ ...prev, [label]: !prev[label] }));
 
   useEffect(() => {
     const controller = new AbortController();
@@ -255,89 +250,7 @@ export default function FunFactsPage() {
             <h2 className="text-2xl font-extrabold text-sage-900">Favorite Food &amp; Drinks</h2>
           </div>
 
-          {/* Menu card */}
-          <div className="bg-white/85 backdrop-blur rounded-3xl shadow-xl border border-sage-200 px-6 py-10 sm:px-12 sm:py-12">
-            <div className="text-center mb-10">
-              <p className="text-sage-700 text-xs tracking-[0.3em] uppercase font-semibold">
-                ✦ Vanya&apos;s Picks ✦
-              </p>
-            </div>
-
-            {/* Chef's special / #1 pick */}
-            <div className="animate-glow-pulse flex items-center justify-center gap-3 mb-10 mx-auto w-fit px-6 py-4 rounded-2xl bg-sage-700 text-white shadow-md">
-              <Crown size={20} className="text-sage-200 shrink-0" />
-              <p className="font-serif text-lg sm:text-xl italic text-center">
-                #1 Pick: {profile.funFacts.favoriteFoods.topPick}
-              </p>
-              <Crown size={20} className="text-sage-200 shrink-0" />
-            </div>
-
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {[
-                { label: "Mains & Sides", photo: "mains", icon: UtensilsCrossed, items: profile.funFacts.favoriteFoods.mains },
-                { label: "Vegetables", photo: "vegetables", icon: Sprout, items: profile.funFacts.favoriteFoods.vegetables },
-                { label: "Snacks", photo: "snacks", icon: Cookie, items: profile.funFacts.favoriteFoods.snacks },
-                { label: "Desserts", photo: "desserts", icon: IceCreamCone, items: profile.funFacts.favoriteFoods.desserts },
-                { label: "Drinks", photo: "drinks", icon: Coffee, items: profile.funFacts.favoriteFoods.drinks },
-              ].map(({ label, photo, icon: Icon, items }) => {
-                const isExpanded = !!expandedFood[label];
-                const hasMore = items.length > FOOD_COLLAPSED_COUNT;
-                const visibleItems = isExpanded ? items : items.slice(0, FOOD_COLLAPSED_COUNT);
-
-                return (
-                  <div
-                    key={label}
-                    className="rounded-3xl overflow-hidden border border-sage-200 bg-white shadow-sm"
-                  >
-                    <div className="relative aspect-[4/3]">
-                      <Image
-                        src={`/images/food/${photo}.webp`}
-                        alt={label}
-                        fill
-                        sizes="(min-width: 1024px) 33vw, 50vw"
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                      <div className="absolute inset-x-0 bottom-0 p-3 flex items-center gap-1.5">
-                        <Icon size={14} className="text-white shrink-0" />
-                        <h4 className="font-serif text-sm sm:text-base font-bold text-white leading-tight">
-                          {label}
-                        </h4>
-                      </div>
-                    </div>
-
-                    <div className="p-3 sm:p-4">
-                      <div className="flex flex-wrap gap-1.5">
-                        {visibleItems.map((f) => (
-                          <span
-                            key={f}
-                            className="text-xs font-medium bg-sage-100 text-sage-800 border border-sage-200 px-2 py-1 rounded-full"
-                          >
-                            {f}
-                          </span>
-                        ))}
-                      </div>
-                      {hasMore && (
-                        <button
-                          onClick={() => toggleFood(label)}
-                          aria-expanded={isExpanded}
-                          className="mt-2 flex items-center gap-1 text-xs font-semibold text-sage-700 hover:text-sage-900 transition-colors"
-                        >
-                          {isExpanded ? "Show less" : `+${items.length - FOOD_COLLAPSED_COUNT} more`}
-                          <motion.span
-                            animate={{ rotate: isExpanded ? 180 : 0 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <ChevronDown size={12} />
-                          </motion.span>
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <FoodCarousel />
         </motion.section>
 
         {/* 4. Hobbies */}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import SectionHeader from "@/components/SectionHeader";
 import { MapPin, Calendar, ChevronDown } from "lucide-react";
 import { profile } from "@/data/profile";
 
@@ -20,24 +21,9 @@ export default function Experience() {
     setExpanded((prev) => ({ ...prev, [i]: !prev[i] }));
 
   return (
-    <section id="experience" className="min-h-screen bg-sage-50 py-24">
+    <section id="experience" className="bg-sage-50 py-24">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
-        {/* Header */}
-        <motion.div
-          className="mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
-        >
-          <p className="text-sage-700 text-xs font-semibold tracking-[0.3em] uppercase mb-2">
-            My journey
-          </p>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-sage-900">
-            Experience
-          </h2>
-          <div className="mt-4 w-16 h-1 bg-sage-400 rounded-full" />
-        </motion.div>
+        <SectionHeader eyebrow="Where I&apos;ve been working" title="Experience" />
 
         {/* Timeline */}
         <div className="relative">
@@ -46,13 +32,9 @@ export default function Experience() {
 
           <div className="space-y-10">
             {profile.experience.map((exp, i) => (
-              <motion.div
+              <div
                 key={`${exp.company}-${exp.role}`}
                 className="relative pl-10 sm:pl-16 md:pl-24"
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               >
                 {/* Timeline dot */}
                 <div
@@ -66,7 +48,7 @@ export default function Experience() {
                 </div>
 
                 {/* Card */}
-                <div className="glass-card rounded-2xl p-6 hover:shadow-lg transition-shadow">
+                <div className="glass-card rounded-xl p-6 hover:shadow-md transition-shadow">
                   <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
                     <div>
                       <h3 className="font-bold text-sage-900 text-base md:text-lg">
@@ -158,7 +140,7 @@ export default function Experience() {
                     </button>
                   )}
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
 

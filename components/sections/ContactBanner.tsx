@@ -15,21 +15,9 @@ export default function ContactBanner() {
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <motion.h2
-          className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-sage-900 mb-6"
-          whileInView={{
-            x: [0, -4, 4, -4, 4, -2, 2, 0],
-            textShadow: [
-              "0 0 0px rgba(119,136,115,0)",
-              "0 0 16px rgba(119,136,115,0.9)",
-              "0 0 0px rgba(119,136,115,0)",
-            ],
-          }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.7, ease: "easeInOut" }}
-        >
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-sage-900 mb-6">
           Let&apos;s work together !
-        </motion.h2>
+        </h2>
         <p className="text-sage-700 text-base mb-8">Got a project? Contact me.</p>
 
         <div className="flex flex-wrap justify-center gap-3">

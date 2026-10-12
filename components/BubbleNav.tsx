@@ -1,18 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { User, Briefcase, Code2, FolderOpen, Zap, Mail } from "lucide-react";
+import { User, Briefcase, Code2, FolderOpen, Zap, Mail, Handshake } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 
 const navItems = [
   { id: "about", label: "About", icon: User },
+  { id: "projects", label: "Projects", icon: FolderOpen },
+  { id: "services", label: "Services", icon: Handshake },
   { id: "experience", label: "Experience", icon: Briefcase },
   { id: "techstack", label: "Tech Stack", icon: Code2 },
   { id: "skills", label: "Skills", icon: Zap },
-  { id: "projects", label: "Projects", icon: FolderOpen },
   { id: "github", label: "GitHub", icon: GithubIcon },
   { id: "contact", label: "Contact", icon: Mail },
 ];
+
+// Phone bar has no room for an 8th icon; GitHub is still in the desktop nav
+// and the top-left social icons.
+const mobileNavItems = navItems.filter((item) => item.id !== "github");
 
 interface Props {
   activeSection: string;
@@ -73,7 +78,7 @@ export default function BubbleNav({ activeSection, onNavigate }: Props) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.6 }}
       >
-        {navItems.map(({ id, label, icon: Icon }) => {
+        {mobileNavItems.map(({ id, label, icon: Icon }) => {
           const isActive = activeSection === id;
           return (
             <button

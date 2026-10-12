@@ -12,10 +12,11 @@ import Experience from "@/components/sections/Experience";
 import TechStack from "@/components/sections/TechStack";
 import Skills from "@/components/sections/Skills";
 import Projects from "@/components/sections/Projects";
+import Services from "@/components/sections/Services";
 import GithubActivity from "@/components/sections/GithubActivity";
 import ContactBanner from "@/components/sections/ContactBanner";
 
-const SECTIONS = ["about", "experience", "techstack", "skills", "projects", "github", "contact"];
+const SECTIONS = ["about", "projects", "services", "experience", "techstack", "skills", "github", "contact"];
 const SPLASH_DURATION = 3200;
 
 const markVisited = () => sessionStorage.setItem("hasVisited", "true");
@@ -40,6 +41,16 @@ export default function Home() {
       if (splashTimer.current) clearTimeout(splashTimer.current);
     };
   }, []);
+
+  // Content is always rendered (so it exists in the server HTML); the splash
+  // just covers it, so stop the page scrolling underneath until it is gone.
+  useEffect(() => {
+    if (isLoading === false) return;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isLoading]);
 
   useEffect(() => {
     if (isLoading !== false) return;
@@ -93,7 +104,7 @@ export default function Home() {
   return (
     <>
       <SplashScreen
-        isVisible={isLoading === true}
+        isVisible={isLoading !== false}
         duration={SPLASH_DURATION}
         onSkip={() => {
           if (splashTimer.current) clearTimeout(splashTimer.current);
@@ -102,67 +113,64 @@ export default function Home() {
         }}
       />
 
-      {isLoading === false && (
-        <>
-          <BubbleNav activeSection={activeSection} onNavigate={setActiveSection} />
+      <BubbleNav activeSection={activeSection} onNavigate={setActiveSection} />
 
-          {/* Top-left social icons */}
-          <div className="fixed left-3 top-3 sm:left-5 sm:top-5 z-40 flex items-center gap-3">
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md transition-all hover:bg-sage-700 hover:border-sage-700 hover:text-white hover:shadow-lg hover:shadow-sage-400/40"
-            >
-              <LinkedinIcon size={15} />
-            </a>
-            <a
-              href={profile.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-              className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md transition-all hover:bg-sage-700 hover:border-sage-700 hover:text-white hover:shadow-lg hover:shadow-sage-400/40"
-            >
-              <GithubIcon size={15} />
-            </a>
-            <a
-              href={`mailto:${profile.email}`}
-              aria-label="Email"
-              className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md transition-all hover:bg-sage-700 hover:border-sage-700 hover:text-white hover:shadow-lg hover:shadow-sage-400/40"
-            >
-              <Mail size={15} />
-            </a>
-          </div>
+      {/* Top-left social icons */}
+      <div className="fixed left-3 top-3 sm:left-5 sm:top-5 z-40 flex items-center gap-3">
+        <a
+          href={profile.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="LinkedIn"
+          className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md transition-all hover:bg-sage-700 hover:border-sage-700 hover:text-white hover:shadow-lg hover:shadow-sage-400/40"
+        >
+          <LinkedinIcon size={15} />
+        </a>
+        <a
+          href={profile.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+          className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md transition-all hover:bg-sage-700 hover:border-sage-700 hover:text-white hover:shadow-lg hover:shadow-sage-400/40"
+        >
+          <GithubIcon size={15} />
+        </a>
+        <a
+          href={`mailto:${profile.email}`}
+          aria-label="Email"
+          className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-sage-300 text-sage-600 shadow-md transition-all hover:bg-sage-700 hover:border-sage-700 hover:text-white hover:shadow-lg hover:shadow-sage-400/40"
+        >
+          <Mail size={15} />
+        </a>
+      </div>
 
-          <main>
-            <About />
-            <Experience />
-            <TechStack />
-            <Skills />
-            <Projects />
-            <GithubActivity />
-            <ContactBanner />
-          </main>
+      <main>
+        <About />
+        <Projects />
+        <Services />
+        <Experience />
+        <TechStack />
+        <Skills />
+        <GithubActivity />
+        <ContactBanner />
+      </main>
 
-          <footer className="relative bg-sage-900 text-sage-400 py-6 px-4 pb-20 md:pb-6 text-center text-sm">
-            <p>
-              © 2026{" "}
-              <span className="text-sage-200 font-semibold">Vanya</span>
-              . All rights reserved.
-            </p>
+      <footer className="relative bg-sage-900 text-sage-400 py-6 px-4 pb-20 md:pb-6 text-center text-sm">
+        <p>
+          © 2026{" "}
+          <span className="text-sage-200 font-semibold">Vanya</span>
+          . All rights reserved.
+        </p>
 
-            {/* Fun Facts link */}
-            <Link
-              href="/fun-facts"
-              className="mt-6 inline-flex items-center gap-1.5 text-sage-400 hover:text-sage-200 transition-colors text-xs font-semibold"
-            >
-              <PawPrint size={14} />
-              Fun facts about me
-            </Link>
-          </footer>
-        </>
-      )}
+        {/* Fun Facts link */}
+        <Link
+          href="/fun-facts"
+          className="mt-6 inline-flex items-center gap-1.5 text-sage-400 hover:text-sage-200 transition-colors text-xs font-semibold"
+        >
+          <PawPrint size={14} />
+          Fun facts about me
+        </Link>
+      </footer>
     </>
   );
 }

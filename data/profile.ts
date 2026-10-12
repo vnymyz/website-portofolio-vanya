@@ -5,6 +5,9 @@ export const profile = {
   title: "Software Engineer Instructor",
   subtitle: "Full-stack Developer & Data Science Educator",
   location: "Indonesia",
+  // One switch for the availability dot on the About photo and its label.
+  availableForWork: true,
+  availabilityLabel: "Open to opportunities & projects",
   email: "mayazurav@gmail.com",
   phone: "+6281280506903",
   linkedin: "https://www.linkedin.com/in/vnymyz",
@@ -110,7 +113,7 @@ export const profile = {
     },
     {
       category: "Frontend",
-      items: ["HTML", "CSS", "React.js", "Next.js", "Vue.js", "Tailwind CSS", "Bootstrap", "DaisyUI", "shadcn/ui"],
+      items: ["HTML", "CSS", "React.js", "Next.js", "Vue.js", "React Native", "Tailwind CSS", "Bootstrap", "DaisyUI", "shadcn/ui"],
     },
     {
       category: "Backend",
@@ -130,8 +133,16 @@ export const profile = {
     },
     {
       category: "Tools & Platforms",
-      items: ["Git", "VS Code", "Figma", "Jupyter Notebook", "Google Colab", "Docker", "Postman", "Laragon", "CapCut"],
+      items: ["Git", "VS Code", "Figma", "Jupyter Notebook", "Google Colab", "Docker", "Postman", "Laragon", "CapCut", "n8n"],
     },
+  ],
+
+  technicalFocus: [
+    { area: "Fullstack Web Development", detail: "React, Next.js, Laravel, Express, Golang" },
+    { area: "Data Science & Machine Learning", detail: "Python, Scikit-learn, TensorFlow, PyTorch" },
+    { area: "Backend Development", detail: "REST APIs, Node.js, PHP, Golang" },
+    { area: "Teaching & Mentoring", detail: "Bootcamps, workshops, 1-on-1 mentoring" },
+    { area: "AI & Deep Learning", detail: "NLP, Computer Vision, OpenCV, YOLOv8" },
   ],
 
   softSkills: [
@@ -210,6 +221,14 @@ export const profile = {
       link: "https://vanya-animal-classifier.streamlit.app/",
       image: "/images/projects/animal-class.webp",
     },
+    {
+      title: "Spotify Recommendation",
+      description:
+        "A Spotify tracks dashboard that compares genres by audio features and recommends songs.",
+      tech: ["Python", "Streamlit", "Pandas"],
+      link: "https://spotify-recommendation-vnymyz.streamlit.app/",
+      image: "/images/projects/spotify-recommendation.webp",
+    },
   ] as Array<{
     title: string;
     description: string;
@@ -218,6 +237,59 @@ export const profile = {
     github?: string;
     image?: string;
   }>,
+
+  // Written for clients who do not know IT: say what they get, not the tools.
+  services: [
+    {
+      id: "web",
+      title: "Websites & mobile apps",
+      summary:
+        "A professional online home for your business, so customers can find you, trust you and reach you.",
+      features: [
+        "Looks good and works on phones, tablets and computers",
+        "Easy for you to change text and photos yourself",
+        "Online booking, ordering or contact forms if you need them",
+        "Fast to load and set up so Google can find it",
+        "A phone app for Android and iPhone when you need one",
+      ],
+    },
+    {
+      id: "automation",
+      title: "Automation & AI chatbots",
+      summary:
+        "Chatbots and automations that handle repetitive work, so you and your team do not have to.",
+      features: [
+        "Answers common customer questions on WhatsApp or Telegram, day and night",
+        "Sends confirmations and reminders automatically",
+        "Moves information between forms, spreadsheets and email without retyping",
+        "Fewer mistakes and hours saved every week",
+      ],
+    },
+    {
+      id: "data",
+      title: "Data analysis & dashboards",
+      summary:
+        "Your numbers made easy to understand, so you can make decisions with confidence.",
+      features: [
+        "Messy spreadsheets cleaned up into one reliable source",
+        "Clear charts of your sales, customers and trends",
+        "A live dashboard you can open any time",
+        "A plain summary of what the numbers mean and what to do next",
+      ],
+    },
+    {
+      id: "ai",
+      title: "AI & machine learning",
+      summary:
+        "Smart features that learn from your data, to save time or spot what people might miss.",
+      features: [
+        "Recognises things in photos, such as products or defects",
+        "Predicts outcomes, such as demand or which customers may leave",
+        "Sorts and labels large amounts of text or images automatically",
+        "Adds AI features to a website or app you already have",
+      ],
+    },
+  ],
 
   funFacts: {
     hobbies: [
@@ -230,11 +302,40 @@ export const profile = {
     ],
     favoriteFoods: {
       topPick: "My Mom's Cooking",
-      mains: ["Fried Chicken", "Nasi Goreng", "Steak Tenderloin", "Sushi", "Tahu", "Telur Ceplok", "Tempe"],
-      vegetables: ["Broccoli", "Capcay", "Kangkung", "Sayur Asem", "Sop Ayam", "Toge"],
-      snacks: ["Bakpau", "Cheese Dumpling", "Tempe Mendoan"],
-      desserts: ["Blueberry Cheesecake", "Choco Lava Cake", "Chocolate Vanilla Ice Cream"],
-      drinks: ["Air Putih", "Butterscotch Sea Salt Latte", "Irish Latte", "Matcha Latte"],
+      // Each food's photo is /images/food/items/<kebab-case-name>.webp.
+      // If that file is missing, the carousel falls back to the category photo.
+      categories: [
+        {
+          id: "mains",
+          label: "Mains & Sides",
+          photo: "/images/food/mains.webp",
+          items: ["Fried Chicken", "Nasi Goreng", "Steak Tenderloin", "Sushi", "Tahu", "Telur Ceplok", "Tempe"],
+        },
+        {
+          id: "vegetables",
+          label: "Vegetables",
+          photo: "/images/food/vegetables.webp",
+          items: ["Broccoli", "Capcay", "Kangkung", "Sayur Asem", "Sayur Oyong", "Sop Ayam", "Toge"],
+        },
+        {
+          id: "snacks",
+          label: "Snacks",
+          photo: "/images/food/snacks.webp",
+          items: ["Bakpau", "Cheese Dumpling", "Martabak", "Pisang Goreng Coklat", "Tempe Mendoan", "Ubi"],
+        },
+        {
+          id: "desserts",
+          label: "Desserts",
+          photo: "/images/food/desserts.webp",
+          items: ["Blueberry Cheesecake", "Choco Lava Cake", "Chocolate Vanilla Ice Cream"],
+        },
+        {
+          id: "drinks",
+          label: "Drinks",
+          photo: "/images/food/drinks.webp",
+          items: ["Air Putih", "Butterscotch Sea Salt Latte", "Dark Chocolate", "Ice Americano", "Irish Latte", "Matcha Latte"],
+        },
+      ],
     },
     cats: [
       {

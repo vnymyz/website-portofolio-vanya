@@ -117,6 +117,17 @@ export default function About() {
                 />
               </motion.div>
 
+              {/* Availability dot — sits on the wrapper, not the avatar, which clips overflow */}
+              {profile.availableForWork && (
+                <span
+                  aria-hidden="true"
+                  className="absolute bottom-[8%] right-[8%] z-10 flex h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7"
+                >
+                  <span className="animate-online-pulse absolute inset-0 rounded-full bg-online" />
+                  <span className="relative h-full w-full rounded-full bg-online ring-4 ring-white" />
+                </span>
+              )}
+
               {/* Floating badge top-right */}
               <motion.div
                 className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-white rounded-2xl px-2.5 py-1.5 sm:px-4 sm:py-2.5 shadow-lg border border-sage-200 text-xs sm:text-base font-semibold text-sage-800 flex items-center gap-1.5 sm:gap-2 transform-gpu will-change-transform"
@@ -146,14 +157,22 @@ export default function About() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex items-center gap-2 text-sage-800 font-medium text-sm mb-8">
-              <MapPin size={14} />
-              <span>{profile.location}</span>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sage-800 font-medium text-sm mb-8">
+              <span className="flex items-center gap-2">
+                <MapPin size={14} />
+                {profile.location}
+              </span>
+              {profile.availableForWork && (
+                <span className="flex items-center gap-2">
+                  <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-online" />
+                  {profile.availabilityLabel}
+                </span>
+              )}
             </div>
 
             <div className="relative mb-8 max-w-[58ch] rounded-r-xl overflow-hidden border border-sage-300 bg-gradient-to-r from-sage-100 via-sage-100 to-sage-100/20">
               <div className="absolute left-0 top-0 bottom-0 w-2 bg-sage-900" />
-              <p className="text-sage-900 text-lg leading-relaxed font-medium text-justify pl-8 pr-6 py-4">
+              <p className="text-sage-900 text-lg leading-relaxed font-medium text-left pl-8 pr-6 py-4">
                 {profile.bio}
               </p>
             </div>

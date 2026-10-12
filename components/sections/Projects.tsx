@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ExternalLink, FolderOpen, ChevronLeft, ChevronRight } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
+import SectionHeader from "@/components/SectionHeader";
 import { profile } from "@/data/profile";
 
 const PROJECTS_PER_PAGE = 3;
@@ -24,36 +25,16 @@ export default function Projects() {
   };
 
   return (
-    <section id="projects" className="min-h-screen bg-white py-24">
+    <section id="projects" className="bg-white py-24">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
-        {/* Header */}
-        <motion.div
-          className="mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
-        >
-          <p className="text-sage-700 text-xs font-semibold tracking-[0.3em] uppercase mb-2">
-            What I&apos;ve built
-          </p>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-sage-900">
-            Projects
-          </h2>
-          <div className="mt-4 w-16 h-1 bg-sage-400 rounded-full" />
-        </motion.div>
+        <SectionHeader eyebrow="What I&apos;ve shipped" title="Projects" />
 
         {hasProjects ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-            {visibleProjects.map((project, i) => (
-              <motion.div
+            {visibleProjects.map((project) => (
+              <div
                 key={project.title}
-                className="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-shadow group"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
-                whileHover={{ y: -4 }}
+                className="glass-card rounded-3xl overflow-hidden shadow-lg shadow-sage-900/10 hover:shadow-2xl hover:shadow-sage-900/20 hover:-translate-y-1 transition-[transform,box-shadow] duration-300 group"
               >
                 {/* Thumbnail */}
                 {project.image ? (
@@ -112,13 +93,16 @@ export default function Projects() {
                     )}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         ) : null}
 
         {hasProjects && pageCount > 1 && (
-          <div className="flex items-center justify-center gap-4 mt-12">
+          <nav
+            aria-label="Projects pages"
+            className="flex items-center justify-center gap-4 mt-12"
+          >
             <button
               onClick={() => goToPage(page - 1)}
               disabled={page === 0}
@@ -134,7 +118,7 @@ export default function Projects() {
                   key={i}
                   onClick={() => goToPage(i)}
                   aria-label={`Go to page ${i + 1}`}
-                  aria-current={page === i ? "true" : undefined}
+                  aria-current={page === i ? "page" : undefined}
                   className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${
                     page === i
                       ? "bg-sage-700 text-white"
@@ -154,7 +138,7 @@ export default function Projects() {
             >
               <ChevronRight size={16} />
             </button>
-          </div>
+          </nav>
         )}
 
         {!hasProjects && (
